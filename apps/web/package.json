@@ -12,6 +12,7 @@
     "@halina/content": "0.1.0",
     "@halina/engine": "0.1.0",
     "firebase": "12.19.0",
+    "lucide-react": "^0.460.0",
     "motion": "12.43.0",
     "qrcode": "1.5.4",
     "react": "19.1.10",

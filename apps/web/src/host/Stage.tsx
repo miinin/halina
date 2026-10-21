@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { expectedResponders, validateInput, type Player } from '@halina/engine';
 import { t } from '../i18n/fi.ts';
-import { Icon } from '../components/icons.tsx';
+import { Icon, Sym } from '../components/icons.tsx';
 import { Avatar, Delta, OptionTile, PlayerChip, Pop, TimerBar } from '../components/ui.tsx';
 import type { HostLike as HostController } from './controller.ts';
 
@@ -214,7 +214,7 @@ function View(ctx: StageCtx) {
             players={players}
             rows={Object.entries(results)
               .filter(([, r]) => r.points > 0)
-              .map(([uid, r]) => ({ uid, delta: r.points, note: r.streak && r.streak > 1 ? <span className="tabular-nums text-accent">×{r.streak}</span> : null }))}
+              .map(([uid, r]) => ({ uid, delta: r.points, note: r.streak && r.streak > 1 ? <span className="inline-flex items-center gap-0.5 tabular-nums text-accent"><Sym.Flame size={14} aria-hidden />{r.streak}</span> : null }))}
           />
           <Options view={view} reveal />
         </div>
@@ -236,7 +236,7 @@ function View(ctx: StageCtx) {
         <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
           <div className="text-3xl md:text-5xl font-black text-accent">{view.category}</div>
           <motion.h1 className="text-5xl md:text-8xl font-black">
-            {t.stage.wagerNow}
+            <Sym.Coins className="mr-4 inline h-12 w-12 text-accent md:h-20 md:w-20" aria-hidden />{t.stage.wagerNow}
           </motion.h1>
           <p className="text-xl md:text-3xl text-white/70">{t.stage.wagerHint}</p>
         </div>
@@ -360,7 +360,7 @@ function View(ctx: StageCtx) {
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-16">
             <Duelist p={players[view.a]} side="left" />
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-3xl md:text-6xl font-black text-paper/40">
-              VS
+              <Sym.Swords className="h-12 w-12 md:h-20 md:w-20" aria-hidden />
             </motion.div>
             <Duelist p={players[view.b]} side="right" />
           </div>
@@ -542,7 +542,7 @@ function Cellar({ view, players }: StageCtx) {
         <div className="flex gap-6">
           {[1, 2, 3].map((n) => (
             <div key={n} className="grid h-40 w-24 place-items-end justify-center rounded-t-[3rem] border-2 border-paper/30 bg-ink2 pb-4 md:h-56 md:w-32">
-              <span className="tabular-nums text-3xl">{n}</span>
+              <Sym.DoorClosed className="mb-2 h-10 w-10 text-paper/50" aria-hidden /><span className="tabular-nums text-3xl">{n}</span>
             </div>
           ))}
         </div>
@@ -662,7 +662,7 @@ function Podium({ view, players }: StageCtx) {
   const heights = ['h-40 md:h-64', 'h-32 md:h-48', 'h-24 md:h-36'];
   return (
     <div className="flex flex-1 flex-col items-center gap-8">
-      <h1 className="text-4xl md:text-6xl font-black">{t.stage.podium}</h1>
+      <h1 className="text-4xl md:text-6xl font-black"><Sym.Trophy className="mr-3 inline h-10 w-10 text-accent md:h-14 md:w-14" aria-hidden />{t.stage.podium}</h1>
       <div className="flex items-end gap-2 md:gap-6">
         {order.map((r) => {
           const place = ranking.indexOf(r);

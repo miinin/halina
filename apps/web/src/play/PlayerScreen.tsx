@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { normalizeText, type Audience } from '@halina/engine';
 import { parsePhase, type PlayerRow, type StateRow } from '../lib/shared.ts';
 import { t } from '../i18n/fi.ts';
+import { Sym } from '../components/icons.tsx';
 import { Avatar, Button, Delta, OptionTile, PlayerChip, Pop, TimerBar } from '../components/ui.tsx';
 
 type V = Record<string, any>;
@@ -423,7 +424,7 @@ function CellarInput({ ctx }: { ctx: Ctx }) {
               onClick={() => ctx.send(d)}
               className={`flex aspect-[2/3] flex-col items-center justify-end rounded-t-[3rem] border-2 pb-4 ${ctx.sent === d ? 'border-accent bg-accent/20' : 'border-paper/30 bg-ink2'}`}
             >
-              <span className="tabular-nums text-3xl">{d + 1}</span>
+              <Sym.DoorClosed className="mb-2 h-8 w-8 text-paper/60" aria-hidden /><span className="tabular-nums text-3xl">{d + 1}</span>
             </button>
           ))}
         </div>
@@ -533,7 +534,7 @@ function ResultView({ ctx }: { ctx: Ctx }) {
     case 'cellar-verdict': {
       const v = view.verdict;
       if (!v) return <Big>{t.play.lookUp}</Big>;
-      if (v.dead.includes(uid)) return <Outcome ok={false} title={t.stage.died} />;
+      if (v.dead.includes(uid)) return <Outcome ok={false} title={t.stage.died} sub={<Sym.Ghost className="mx-auto h-10 w-10 text-paper/60" aria-hidden />} />;
       if (v.survivors.includes(uid)) return <Outcome ok title={t.stage.survived} />;
       return <Big>{t.play.lookUp}</Big>;
     }
