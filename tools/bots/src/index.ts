@@ -19,6 +19,7 @@ import {
   set,
   type Database,
 } from 'firebase/database';
+import { botAnswer, type InputKind } from '@halina/engine';
 
 const args = Object.fromEntries(
   process.argv.slice(2).reduce<[string, string][]>((acc, a, i, all) => {
@@ -41,7 +42,6 @@ if (!/^[A-Z]{4}$/.test(ROOM)) {
 
 const NAMES = ['Botti-Bertta', 'Robo-Raimo', 'Kone-Kaija', 'Piiri-Pekka', 'Datta-Liisa', 'Sähkö-Sami', 'Bitti-Briitta', 'Algo-Aatu', 'Servo-Senja', 'Tera-Tapsa', 'Giga-Göran', 'Nano-Nelli'];
 const AVATARS = ['fox', 'cat', 'dog', 'bear', 'panda', 'frog', 'owl', 'penguin', 'octopus', 'unicorn', 'tiger', 'monkey'];
-const LIES = ['saunakiukaan', 'pullaa', 'hirven', 'Nokia 3310', 'karvalakki', 'mämmiä', 'kalakukko', 'lumilapio', 'kumisaappaat', 'sisu', 'muumimuki', 'salmiakki', 'porokoira', 'tervapulla'];
 
 interface StateRow {
   stepKey: string;
@@ -64,48 +64,7 @@ async function peekAnswer(step: string): Promise<unknown> {
   }
 }
 
-const rand = (n: number) => Math.floor(Math.random() * n);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-function decide(kind: string, view: any, uid: string, score: number, answer: unknown): unknown {
-  const smart = Math.random() < ACCURACY;
-  switch (kind) {
-    case 'mc':
-      return smart && typeof answer === 'number' ? answer : rand((view.options as string[]).length);
-    case 'wager': {
-      if (score < 500 && Math.random() < 0.5) return 500;
-      const r = Math.random();
-      return r < 0.15 ? score : Math.round(score * Math.random() * 0.7);
-    }
-    case 'number': {
-      if (typeof answer === 'number') {
-        const spread = smart ? 0.15 : 0.8;
-        const v = answer * (1 + (Math.random() * 2 - 1) * spread);
-        return Math.abs(answer) < 100 ? Math.round(v * 10) / 10 : Math.round(v);
-      }
-      return rand(1000);
-    }
-    case 'text':
-      return LIES[rand(LIES.length)] + (Math.random() < 0.3 ? ` ${rand(100)}` : '');
-    case 'choice': {
-      const opts = view.options as { id: string }[];
-      if (smart && typeof answer === 'string') return answer;
-      return opts[rand(opts.length)].id;
-    }
-    case 'door':
-      return rand(3);
-    case 'math':
-      return smart && Array.isArray(answer) ? answer : [rand(100), rand(100), rand(100)];
-    case 'vote': {
-      const others = (view.cellar as string[]).filter((u) => u !== uid);
-      return others[rand(others.length)];
-    }
-    case 'bet':
-      return Math.random() < 0.5 ? view.a : view.b;
-    default:
-      return null;
-  }
-}
 
 function inAudience(a: unknown, uid: string, alive: boolean) {
   return a === 'all' ? true : a === 'alive' ? alive : Array.isArray(a) && a.includes(uid);
@@ -143,7 +102,7 @@ async function startBot(i: number) {
     const delay = (800 + Math.random() * Math.max(500, s.durationMs * 0.5)) * SPEED;
     await sleep(Math.min(delay, Math.max(0, s.durationMs - 1500)));
     const answer = await peekAnswer(step);
-    const value = decide(s.input, view, uid, score, answer);
+    const value = botAnswer(s.input as InputKind, view, uid, score, answer, ACCURACY);
     if (value === null || value === undefined) return;
     await set(ref(db, `rooms/${ROOM}/inputs/${step}/${uid}`), { value, at: serverTimestamp() }).catch(() => {});
   });

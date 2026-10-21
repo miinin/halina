@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { expectedResponders, validateInput, type Player } from '@halina/engine';
 import { t } from '../i18n/fi.ts';
 import { Avatar, Delta, OptionTile, PlayerChip, Pop, TimerBar } from '../components/ui.tsx';
-import type { HostController } from './controller.ts';
+import type { HostLike as HostController } from './controller.ts';
 
 type V = Record<string, any>;
 
@@ -35,7 +35,7 @@ export function Stage({ ctrl }: { ctrl: HostController }) {
 
   return (
     <main className="relative flex flex-1 flex-col gap-4 px-8 pt-6 pb-24">
-      <header className="flex items-center gap-6 text-xl text-white/60">
+      <header className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-white/60 md:text-xl">
         <span className="font-black text-white">{t.appName}</span>
         {mode && g.stage !== 'podium' && (
           <span>
@@ -48,7 +48,7 @@ export function Stage({ ctrl }: { ctrl: HostController }) {
       </header>
       {s && s.durationMs > 0 && <TimerBar remainingMs={remaining} durationMs={s.durationMs} paused={s.paused} big />}
       {s?.paused && (
-        <div className="absolute inset-x-0 top-28 z-20 mx-auto w-fit rounded-2xl bg-accent px-8 py-3 text-3xl font-black text-ink shadow-xl">
+        <div className="absolute inset-x-0 top-28 z-20 mx-auto w-fit rounded-2xl bg-accent px-8 py-3 text-xl md:text-3xl font-black text-ink shadow-xl">
           ⏸ {t.common.paused}
         </div>
       )}
@@ -93,7 +93,7 @@ function Answered({ ctrl }: { ctrl: HostController }) {
 function Title({ children, sub }: { children: ReactNode; sub?: ReactNode }) {
   return (
     <div className="my-4 text-center">
-      <h1 className="text-5xl leading-tight font-black text-balance xl:text-6xl">{children}</h1>
+      <h1 className="text-3xl md:text-5xl leading-tight font-black text-balance xl:text-6xl">{children}</h1>
       {sub && <div className="mt-3 text-2xl text-white/70">{sub}</div>}
     </div>
   );
@@ -102,7 +102,7 @@ function Title({ children, sub }: { children: ReactNode; sub?: ReactNode }) {
 function Options({ view, reveal }: { view: V; reveal?: boolean }) {
   const counts = view.counts as number[] | undefined;
   return (
-    <div className="mt-auto grid grid-cols-2 gap-4">
+    <div className="mt-auto grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
       {(view.options as string[]).map((o, i) => (
         <OptionTile
           key={i}
@@ -145,24 +145,24 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
           {view.final && (
-            <motion.div initial={{ scale: 3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-4xl font-black tracking-[0.4em] text-accent2">
+            <motion.div initial={{ scale: 3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-2xl md:text-4xl font-black tracking-[0.4em] text-accent2">
               {t.common.final}
             </motion.div>
           )}
-          <div className="text-3xl text-white/60">{t.common.round(view.round, view.totalRounds)}</div>
+          <div className="text-xl md:text-3xl text-white/60">{t.common.round(view.round, view.totalRounds)}</div>
           <motion.h1
             initial={{ scale: 0.6, opacity: 0, rotate: -4 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
             transition={{ type: 'spring', stiffness: 120, damping: 12 }}
-            className="text-[8rem] leading-none font-black text-accent"
+            className="text-6xl md:text-[8rem] leading-none font-black text-accent"
           >
             {m.name}
           </motion.h1>
           <Pop delay={0.6}>
-            <p className="max-w-4xl text-4xl font-bold text-balance">{m.rule}</p>
+            <p className="max-w-4xl text-2xl md:text-4xl font-bold text-balance">{m.rule}</p>
           </Pop>
-          {view.final && <Pop delay={1}><p className="text-3xl text-white/70">{t.stage.introFinal}</p></Pop>}
-          {view.options?.estimateVariant === 'under' && <p className="text-3xl text-accent2">{t.estimateUnder}</p>}
+          {view.final && <Pop delay={1}><p className="text-xl md:text-3xl text-white/70">{t.stage.introFinal}</p></Pop>}
+          {view.options?.estimateVariant === 'under' && <p className="text-xl md:text-3xl text-accent2">{t.estimateUnder}</p>}
         </div>
       );
     }
@@ -223,8 +223,8 @@ function View(ctx: StageCtx) {
     case 'wager-category':
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-4">
-          <div className="text-3xl text-white/60">{t.stage.category}</div>
-          <motion.div initial={{ scale: 0.3 }} animate={{ scale: 1 }} className="text-9xl font-black text-accent">
+          <div className="text-xl md:text-3xl text-white/60">{t.stage.category}</div>
+          <motion.div initial={{ scale: 0.3 }} animate={{ scale: 1 }} className="text-6xl md:text-9xl font-black text-accent">
             {view.category}
           </motion.div>
         </div>
@@ -233,11 +233,11 @@ function View(ctx: StageCtx) {
     case 'wager-bet':
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-          <div className="text-5xl font-black text-accent">{view.category}</div>
-          <motion.h1 animate={{ scale: [1, 1.06, 1] }} transition={{ repeat: Infinity, duration: 1.2 }} className="text-8xl font-black">
+          <div className="text-3xl md:text-5xl font-black text-accent">{view.category}</div>
+          <motion.h1 animate={{ scale: [1, 1.06, 1] }} transition={{ repeat: Infinity, duration: 1.2 }} className="text-5xl md:text-8xl font-black">
             💰 {t.stage.wagerNow}
           </motion.h1>
-          <p className="text-3xl text-white/70">{t.stage.wagerHint}</p>
+          <p className="text-xl md:text-3xl text-white/70">{t.stage.wagerHint}</p>
         </div>
       );
 
@@ -246,11 +246,11 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col gap-4">
           <Title>{view.prompt}</Title>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-6">
             {view.biggestWin && (
               <Pop delay={0.8} className="rounded-3xl bg-good/20 p-5 text-center">
                 <div className="text-xl text-good">{t.stage.biggestWin}</div>
-                <div className="text-3xl font-black">
+                <div className="text-xl md:text-3xl font-black">
                   <Avatar id={players[view.biggestWin]?.avatar ?? ''} /> {players[view.biggestWin]?.name}{' '}
                   <Delta n={results[view.biggestWin].delta} />
                 </div>
@@ -259,7 +259,7 @@ function View(ctx: StageCtx) {
             {view.biggestLoss && (
               <Pop delay={1.1} className="rounded-3xl bg-bad/20 p-5 text-center">
                 <div className="text-xl text-bad">{t.stage.biggestLoss}</div>
-                <div className="text-3xl font-black">
+                <div className="text-xl md:text-3xl font-black">
                   <Avatar id={players[view.biggestLoss]?.avatar ?? ''} /> {players[view.biggestLoss]?.name}{' '}
                   <Delta n={results[view.biggestLoss].delta} />
                 </div>
@@ -290,9 +290,9 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col gap-6">
           <Title sub={t.stage.findTruth}>{view.prompt}</Title>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
             {(view.options as { id: string; text: string }[]).map((o, i) => (
-              <Pop key={o.id} delay={i * 0.08} className="rounded-2xl bg-white/10 px-6 py-5 text-3xl font-bold">
+              <Pop key={o.id} delay={i * 0.08} className="rounded-2xl bg-white/10 px-6 py-5 text-xl md:text-3xl font-bold">
                 {o.text}
               </Pop>
             ))}
@@ -311,10 +311,10 @@ function View(ctx: StageCtx) {
       if (!v) return null;
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <div className="text-4xl font-black text-white/70">{t.challenges[v.challenge as keyof typeof t.challenges].name}</div>
-          {v.challenge === 'doors' && <div className="text-4xl">{t.stage.trapWas(v.trap)}</div>}
+          <div className="text-2xl md:text-4xl font-black text-white/70">{t.challenges[v.challenge as keyof typeof t.challenges].name}</div>
+          {v.challenge === 'doors' && <div className="text-2xl md:text-4xl">{t.stage.trapWas(v.trap)}</div>}
           {v.challenge === 'math' && (
-            <div className="flex gap-6 text-3xl font-black tabular-nums">
+            <div className="flex flex-wrap justify-center gap-6 text-xl md:text-3xl font-black tabular-nums">
               {(v.problems as { text: string; answer: number }[]).map((p, i) => (
                 <span key={i}>
                   {p.text} = <span className="text-accent">{p.answer}</span>
@@ -325,13 +325,13 @@ function View(ctx: StageCtx) {
           <div className="flex flex-wrap justify-center gap-4">
             {(v.dead as string[]).map((u, i) => (
               <motion.div key={u} initial={{ y: 0 }} animate={{ y: [0, -20, 0], rotate: [0, -8, 8, 0] }} transition={{ delay: 0.5 + i * 0.3 }}>
-                <div className="rounded-3xl bg-bad/20 px-6 py-4 text-3xl font-black">
+                <div className="rounded-3xl bg-bad/20 px-6 py-4 text-xl md:text-3xl font-black">
                   👻 {players[u]?.name} <div className="text-lg font-normal text-bad">{t.stage.died}</div>
                 </div>
               </motion.div>
             ))}
             {(v.survivors as string[]).map((u) => (
-              <div key={u} className="rounded-3xl bg-good/20 px-6 py-4 text-3xl font-black">
+              <div key={u} className="rounded-3xl bg-good/20 px-6 py-4 text-xl md:text-3xl font-black">
                 <Avatar id={players[u]?.avatar ?? ''} /> {players[u]?.name}
                 <div className="text-lg font-normal text-good">{v.spared === u ? t.stage.spared : t.stage.survived}</div>
               </div>
@@ -345,7 +345,7 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col items-center justify-center">
           <Title sub={view.unit ? `(${view.unit})` : undefined}>{view.prompt}</Title>
-          {view.variant === 'under' && <p className="text-3xl text-accent2">{t.estimateUnder}</p>}
+          {view.variant === 'under' && <p className="text-xl md:text-3xl text-accent2">{t.estimateUnder}</p>}
         </div>
       );
 
@@ -356,14 +356,14 @@ function View(ctx: StageCtx) {
     case 'duel-bet':
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-10">
-          <div className="flex items-center gap-16">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-16">
             <Duelist p={players[view.a]} side="left" />
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1, rotate: [0, 10, -10, 0] }} className="text-8xl font-black text-accent2">
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1, rotate: [0, 10, -10, 0] }} className="text-5xl md:text-8xl font-black text-accent2">
               ⚔️
             </motion.div>
             <Duelist p={players[view.b]} side="right" />
           </div>
-          {view.kind === 'duel-bet' && <p className="text-4xl font-bold">{t.play.betOn}</p>}
+          {view.kind === 'duel-bet' && <p className="text-2xl md:text-4xl font-bold">{t.play.betOn}</p>}
         </div>
       );
 
@@ -374,7 +374,7 @@ function View(ctx: StageCtx) {
           <DuelScore view={view} players={players} />
           <Title>{view.prompt}</Title>
           {view.kind === 'duel-q-reveal' && (
-            <div className="mb-4 text-center text-3xl font-black">
+            <div className="mb-4 text-center text-xl md:text-3xl font-black">
               {view.winner ? (
                 <span className="text-good">
                   {t.stage.roundWinner}: {players[view.winner]?.name}
@@ -392,7 +392,7 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col items-center justify-center">
           <DuelScore view={view} players={players} />
-          <div className="text-4xl font-black text-accent2">{t.stage.tiebreak}</div>
+          <div className="text-2xl md:text-4xl font-black text-accent2">{t.stage.tiebreak}</div>
           <Title sub={view.unit ? `(${view.unit})` : undefined}>{view.prompt}</Title>
         </div>
       );
@@ -414,12 +414,12 @@ function View(ctx: StageCtx) {
               ))}
             </div>
           )}
-          <div className="text-3xl text-white/60">{t.stage.winner}</div>
+          <div className="text-xl md:text-3xl text-white/60">{t.stage.winner}</div>
           <motion.div initial={{ scale: 0.3 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
             <Avatar id={players[r.winner]?.avatar ?? ''} size="xl" />
-            <div className="text-7xl font-black text-accent">{players[r.winner]?.name}</div>
+            <div className="text-5xl md:text-7xl font-black text-accent">{players[r.winner]?.name}</div>
           </motion.div>
-          <div className="text-3xl">
+          <div className="text-xl md:text-3xl">
             <Delta n={1000 + r.steal} /> <span className="text-white/60">{t.stage.steals(r.steal)}</span>
           </div>
           {bettors.length > 0 && (
@@ -453,7 +453,7 @@ function Duelist({ p, side }: { p: Player | undefined; side: 'left' | 'right' })
       className="flex flex-col items-center gap-3"
     >
       <Avatar id={p?.avatar ?? ''} size="xl" />
-      <div className="text-6xl font-black">{p?.name}</div>
+      <div className="text-4xl md:text-6xl font-black">{p?.name}</div>
       <div className="text-2xl text-white/60">{t.common.points(p?.score ?? 0)}</div>
     </motion.div>
   );
@@ -461,7 +461,7 @@ function Duelist({ p, side }: { p: Player | undefined; side: 'left' | 'right' })
 
 function DuelScore({ view, players }: { view: V; players: Record<string, Player> }) {
   return (
-    <div className="flex items-center justify-center gap-6 text-3xl font-black">
+    <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6 text-xl md:text-3xl font-black">
       <span>
         <Avatar id={players[view.a]?.avatar ?? ''} /> {players[view.a]?.name}
       </span>
@@ -492,7 +492,7 @@ function BluffReveal({ view, players, elapsed }: StageCtx) {
             exit={{ opacity: 0, x: -100 }}
             className={`mx-auto flex w-full max-w-4xl flex-col items-center gap-5 rounded-3xl p-8 text-center ${cur.truth ? 'bg-good/25' : 'bg-white/10'}`}
           >
-            <div className="text-5xl font-black">{cur.text}</div>
+            <div className="text-3xl md:text-5xl font-black">{cur.text}</div>
             {cur.choosers.length > 0 ? (
               <div className="flex flex-wrap items-center justify-center gap-2 text-xl">
                 <span className="text-white/60">{cur.truth ? '✓' : t.stage.fellFor}:</span>
@@ -505,11 +505,11 @@ function BluffReveal({ view, players, elapsed }: StageCtx) {
             )}
             <Pop delay={1.5}>
               {cur.truth ? (
-                <div className="text-6xl font-black tracking-widest text-good">{t.stage.truth}</div>
+                <div className="text-4xl md:text-6xl font-black tracking-widest text-good">{t.stage.truth}</div>
               ) : cur.house ? (
-                <div className="text-3xl font-bold text-white/70">🏠 {t.stage.houseLie}</div>
+                <div className="text-xl md:text-3xl font-bold text-white/70">🏠 {t.stage.houseLie}</div>
               ) : (
-                <div className="flex items-center gap-3 text-3xl font-bold">
+                <div className="flex items-center gap-3 text-xl md:text-3xl font-bold">
                   {t.stage.lieBy}
                   {cur.authors.map((u) => (
                     <PlayerChip key={u} p={players[u]} extra={<Delta n={500 * cur.choosers.length} />} />
@@ -533,15 +533,15 @@ function Cellar({ view, players }: StageCtx) {
   const ch = t.challenges[view.challenge as keyof typeof t.challenges];
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-6 bg-[radial-gradient(circle_at_center,rgba(255,79,139,0.15),transparent_60%)] text-center">
-      <motion.div animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 2 }} className="text-7xl">
+      <motion.div animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 2 }} className="text-5xl md:text-7xl">
         🕯️
       </motion.div>
-      <h1 className="text-7xl font-black tracking-[0.3em] text-accent2">{t.stage.cellarTitle}</h1>
-      <div className="text-5xl font-black">{ch.name}</div>
-      <p className="max-w-3xl text-3xl text-white/80">{ch.rule}</p>
-      {view.challenge === 'doors' && <div className="text-9xl tracking-[0.5em]">🚪🚪🚪</div>}
+      <h1 className="text-5xl md:text-7xl font-black tracking-[0.3em] text-accent2">{t.stage.cellarTitle}</h1>
+      <div className="text-3xl md:text-5xl font-black">{ch.name}</div>
+      <p className="max-w-3xl text-xl md:text-3xl text-white/80">{ch.rule}</p>
+      {view.challenge === 'doors' && <div className="text-6xl md:text-9xl tracking-[0.5em]">🚪🚪🚪</div>}
       {view.challenge === 'math' && (
-        <div className="flex gap-10 text-5xl font-black tabular-nums">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-10 text-3xl md:text-5xl font-black tabular-nums">
           {(view.problems as string[]).map((p) => (
             <span key={p}>{p} = ?</span>
           ))}
@@ -572,7 +572,7 @@ function EstimateReveal({ view, players, elapsed }: StageCtx) {
   return (
     <div className="flex flex-1 flex-col gap-6">
       <Title>{view.prompt}</Title>
-      <div className="relative mx-6 mt-16 h-56">
+      <div className="relative mx-6 mt-16 h-56 overflow-visible">
         <div className="absolute inset-x-0 top-1/2 h-2 rounded-full bg-white/30" />
         {guesses.map((g, i) => (
           <motion.div
@@ -595,7 +595,7 @@ function EstimateReveal({ view, players, elapsed }: StageCtx) {
           className="absolute top-[calc(50%-3.5rem)] flex -translate-x-1/2 flex-col items-center"
           style={{ left: `${pos(answer)}%` }}
         >
-          <span className="rounded-xl bg-accent px-4 py-1 text-3xl font-black whitespace-nowrap text-ink">
+          <span className="rounded-xl bg-accent px-4 py-1 text-xl md:text-3xl font-black whitespace-nowrap text-ink">
             {answer.toLocaleString('fi-FI')} {view.unit}
           </span>
           <span className="h-10 w-1 bg-accent" />
@@ -620,7 +620,7 @@ function Scoreboard({ view, players }: StageCtx) {
   const top = ranking.slice(0, 10);
   return (
     <div className="flex flex-1 flex-col items-center gap-4">
-      <h1 className="text-6xl font-black">{t.stage.scoreboard}</h1>
+      <h1 className="text-4xl md:text-6xl font-black">{t.stage.scoreboard}</h1>
       <ol className="flex w-full max-w-4xl flex-col gap-2">
         {top.map((r, i) => (
           <motion.li
@@ -629,18 +629,18 @@ function Scoreboard({ view, players }: StageCtx) {
             initial={{ opacity: 0, x: -60 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 * (top.length - i) }}
-            className={`flex items-center gap-4 rounded-2xl px-5 py-3 text-3xl ${i === 0 ? 'bg-accent text-ink' : 'bg-white/10'}`}
+            className={`flex items-center gap-4 rounded-2xl px-5 py-3 text-xl md:text-3xl ${i === 0 ? 'bg-accent text-ink' : 'bg-white/10'}`}
           >
             <span className="w-10 font-black tabular-nums">{r.rank}.</span>
             <Avatar id={players[r.uid]?.avatar ?? ''} />
             <span className="flex-1 truncate font-bold">{players[r.uid]?.name}</span>
             {r.delta !== 0 && <Delta n={r.delta} className={`text-2xl ${i === 0 ? '!text-ink' : ''}`} />}
-            <span className="w-40 text-right font-black tabular-nums">{r.score.toLocaleString('fi-FI')}</span>
+            <span className="w-24 md:w-40 text-right font-black tabular-nums">{r.score.toLocaleString('fi-FI')}</span>
           </motion.li>
         ))}
       </ol>
       {view.nextMode && (
-        <div className="mt-auto text-3xl text-white/70">
+        <div className="mt-auto text-xl md:text-3xl text-white/70">
           {t.stage.nextUp}: <b className="text-accent">{t.modes[view.nextMode as keyof typeof t.modes].name}</b>
         </div>
       )}
@@ -652,11 +652,11 @@ function Podium({ view, players }: StageCtx) {
   const ranking = view.ranking as { uid: string; score: number; rank: number }[];
   const awards = view.awards as { id: keyof typeof t.awards; uid: string; value: number }[];
   const order = [1, 0, 2].map((i) => ranking[i]).filter(Boolean);
-  const heights = ['h-64', 'h-48', 'h-36'];
+  const heights = ['h-40 md:h-64', 'h-32 md:h-48', 'h-24 md:h-36'];
   return (
     <div className="flex flex-1 flex-col items-center gap-8">
-      <h1 className="text-6xl font-black">🏆 {t.stage.podium}</h1>
-      <div className="flex items-end gap-6">
+      <h1 className="text-4xl md:text-6xl font-black">🏆 {t.stage.podium}</h1>
+      <div className="flex items-end gap-2 md:gap-6">
         {order.map((r) => {
           const place = ranking.indexOf(r);
           return (
@@ -665,12 +665,12 @@ function Podium({ view, players }: StageCtx) {
               initial={{ y: 200, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6 * (2 - place) + 0.3, type: 'spring' }}
-              className="flex w-64 flex-col items-center gap-2"
+              className="flex w-24 flex-col items-center gap-2 sm:w-40 md:w-64"
             >
               <Avatar id={players[r.uid]?.avatar ?? ''} size={place === 0 ? 'xl' : 'lg'} />
-              <div className="text-4xl font-black">{players[r.uid]?.name}</div>
+              <div className="text-2xl md:text-4xl font-black">{players[r.uid]?.name}</div>
               <div className="text-2xl tabular-nums text-white/70">{r.score.toLocaleString('fi-FI')}</div>
-              <div className={`${heights[place]} flex w-full items-start justify-center rounded-t-3xl pt-4 text-6xl font-black ${place === 0 ? 'bg-accent text-ink' : 'bg-white/15'}`}>
+              <div className={`${heights[place]} flex w-full items-start justify-center rounded-t-3xl pt-4 text-4xl md:text-6xl font-black ${place === 0 ? 'bg-accent text-ink' : 'bg-white/15'}`}>
                 {place + 1}
               </div>
             </motion.div>
@@ -679,7 +679,7 @@ function Podium({ view, players }: StageCtx) {
       </div>
       {awards.length > 0 && (
         <Pop delay={2.4} className="w-full max-w-5xl">
-          <h2 className="mb-3 text-center text-3xl font-black text-white/70">{t.stage.awards}</h2>
+          <h2 className="mb-3 text-center text-xl md:text-3xl font-black text-white/70">{t.stage.awards}</h2>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {awards.map((a) => (
               <div key={a.id} className="rounded-2xl bg-white/10 p-4 text-center">

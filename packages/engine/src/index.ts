@@ -15,3 +15,4 @@ export type { EstimateGuess } from './modes/estimate.ts';
 export { duel, pickPair } from './modes/duel.ts';
 export type { McResult } from './modes/classic.ts';
 export type { WagerResult } from './modes/wager.ts';
+export * from './bots.ts';

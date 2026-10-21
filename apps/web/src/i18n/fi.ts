@@ -122,7 +122,7 @@ export const fi = {
     rematch: 'Pelaa uudestaan samalla porukalla',
     toLobby: 'Takaisin aulaan',
     endGame: 'Lopeta peli',
-    confirmEnd: 'Lopetetaanko peli ja palataan aulaan?',
+    confirmEnd: 'Varmasti? Paina uudelleen',
     resumedPaused: 'Peli palautettiin tauolle. Paina Jatka, kun olette valmiita.',
     speed: 'Nopeus (dev)',
   },

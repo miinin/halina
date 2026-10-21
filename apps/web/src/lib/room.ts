@@ -1,5 +1,5 @@
 import { get, onDisconnect, onValue, ref, serverTimestamp, set, update, type Database } from 'firebase/database';
-import type { Audience, InputKind, PhaseView, Uid } from '@halina/engine';
+import type { Uid } from '@halina/engine';
 
 /** 22 kirjainta: O, I, L ja Q poistettu → 22⁴ ≈ 234 000 koodia */
 export const CODE_ALPHABET = 'ABCDEFGHJKMNPRSTUVWXYZ';
@@ -16,74 +16,8 @@ export function normalizeCode(s: string): string {
   return s.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
 }
 
-export const AVATARS: Record<string, string> = {
-  fox: '🦊', cat: '🐱', dog: '🐶', bear: '🐻', panda: '🐼', frog: '🐸', owl: '🦉', penguin: '🐧',
-  octopus: '🐙', unicorn: '🦄', tiger: '🐯', monkey: '🐵', hedgehog: '🦔', koala: '🐨', chick: '🐥', whale: '🐳',
-};
-export const AVATAR_IDS = Object.keys(AVATARS);
-
-export interface PlayerRow {
-  name: string;
-  avatar: string;
-  score: number;
-  alive: boolean;
-  connected?: boolean;
-  joinedAt?: number;
-}
-
-export interface Meta {
-  hostUid: string;
-  status: 'lobby' | 'playing' | 'finished';
-  createdAt: number;
-  hostConnected?: boolean;
-}
-
-/** rooms/$code/state – julkinen vaihe. view ja audience JSON-merkkijonona (RTDB hukkaa tyhjät taulukot). */
-export interface StateRow {
-  stepKey: string;
-  stage: 'lobby' | 'intro' | 'round' | 'scoreboard' | 'podium';
-  round: number;
-  mode: string | null;
-  phase: string;
-  input: InputKind | null;
-  startedAt: number;
-  deadline: number;
-  durationMs: number;
-  paused: boolean;
-  remainingMs: number;
-  data: string;
-}
-
-export interface PublicPhase {
-  view: PhaseView;
-  audience: Audience;
-}
-
-export function parsePhase(s: StateRow | null): PublicPhase {
-  if (!s?.data) return { view: { kind: 'lobby' }, audience: 'all' };
-  try {
-    return JSON.parse(s.data) as PublicPhase;
-  } catch {
-    return { view: { kind: 'lobby' }, audience: 'all' };
-  }
-}
-
-export function lobbyState(): StateRow {
-  return {
-    stepKey: 'lobby',
-    stage: 'lobby',
-    round: -1,
-    mode: null,
-    phase: 'lobby',
-    input: null,
-    startedAt: 0,
-    deadline: 0,
-    durationMs: 0,
-    paused: false,
-    remainingMs: 0,
-    data: JSON.stringify({ view: { kind: 'lobby' }, audience: 'all' }),
-  };
-}
+export * from './shared.ts';
+import type { StateRow } from './shared.ts';
 
 export const paths = {
   code: (c: string) => `codes/${c}`,

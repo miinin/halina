@@ -26,7 +26,8 @@
     "test:e2e": "firebase emulators:exec --only auth,database --project demo-halina \"playwright test\"",
     "typecheck": "tsc -p packages/engine && tsc -p packages/content && tsc -p apps/web && tsc -p tools/bots",
     "lint": "npm run typecheck",
-    "deploy": "npm run build && firebase deploy --only hosting,database"
+    "deploy": "npm run build && firebase deploy --only hosting,database",
+    "build:demo": "node apps/web/scripts/build-demo.mjs"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "5.0.2",

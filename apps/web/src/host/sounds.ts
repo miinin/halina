@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { sfx } from '../lib/sound.ts';
-import type { HostController } from './controller.ts';
+import type { HostLike as HostController } from './controller.ts';
 
 /** Äänet isolla näytöllä vaiheen vaihtuessa ja viimeisillä sekunneilla. */
 export function useHostSounds(ctrl: HostController) {

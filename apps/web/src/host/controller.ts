@@ -36,11 +36,34 @@ export interface FreeText {
   hidden: boolean;
 }
 
+/** Mitä ison näytön näkymät tarvitsevat: toteutuu sekä Firebase-hostilla että demolla. */
+export interface HostLike {
+  readonly code: string;
+  game: GameState | null;
+  roster: Record<Uid, PlayerRow>;
+  inputs: Record<Uid, RawInput>;
+  state: StateRow | null;
+  reviewed: Set<Uid>;
+  error: string | null;
+  now(): number;
+  subscribe(fn: () => void): () => void;
+  next(): Promise<void>;
+  pause(minRemaining?: number): Promise<void>;
+  resume(): Promise<void>;
+  rematch(): Promise<void>;
+  toLobby(): Promise<void>;
+  kick(uid: Uid): Promise<void>;
+  start(plan: PlanItem[], pack: QuestionPack, speed?: number): Promise<void>;
+  freeTexts(): FreeText[];
+  markReviewed(uid: Uid): void;
+  hideText(uid: Uid): Promise<void>;
+}
+
 /**
  * Hostin ajosilmukka: hostin selain on pelin ainoa tuomari. Moottori (puhdas TS) laskee,
  * tämä luokka kirjoittaa tilan Firebaseen ja kuuntelee pelaajien syötteitä.
  */
-export class HostController {
+export class HostController implements HostLike {
   game: GameState | null = null;
   roster: Record<Uid, PlayerRow> = {};
   inputs: Record<Uid, RawInput> = {};
@@ -168,7 +191,7 @@ export class HostController {
 
   subscribe(fn: () => void) {
     this.listeners.add(fn);
-    return () => this.listeners.delete(fn);
+    return () => void this.listeners.delete(fn);
   }
 
   private emit() {

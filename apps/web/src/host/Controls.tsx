@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { t } from '../i18n/fi.ts';
 import { isMuted, setMuted } from '../lib/sound.ts';
 import { Button } from '../components/ui.tsx';
-import type { HostController } from './controller.ts';
+import type { HostLike as HostController } from './controller.ts';
 
-export function Controls({ ctrl }: { ctrl: HostController }) {
+export function Controls({ ctrl, navClass = 'fixed inset-x-0 bottom-0' }: { ctrl: HostController; navClass?: string }) {
   const [muted, setM] = useState(isMuted());
   const [modOpen, setModOpen] = useState(false);
+  const [confirmEnd, setConfirmEnd] = useState(false);
   const s = ctrl.state;
   const podium = ctrl.game?.stage === 'podium';
   const texts = ctrl.freeTexts();
@@ -43,7 +44,7 @@ export function Controls({ ctrl }: { ctrl: HostController }) {
           </ul>
         </aside>
       )}
-      <nav className="fixed inset-x-0 bottom-0 z-20 flex items-center gap-2 bg-ink/90 px-4 py-3 backdrop-blur">
+      <nav className={`${navClass} z-20 flex items-center gap-2 bg-ink/90 px-4 py-3 backdrop-blur`}>
         {!podium && s && (
           <>
             {s.paused ? (
@@ -81,12 +82,18 @@ export function Controls({ ctrl }: { ctrl: HostController }) {
             {muted ? '🔇' : '🔊'}
           </Button>
           <Button
-            variant="ghost"
+            variant={confirmEnd ? 'danger' : 'ghost'}
             onClick={() => {
-              if (podium || confirm(t.host.confirmEnd)) void ctrl.toLobby();
+              if (podium || confirmEnd) {
+                setConfirmEnd(false);
+                void ctrl.toLobby();
+              } else {
+                setConfirmEnd(true);
+                setTimeout(() => setConfirmEnd(false), 4000);
+              }
             }}
           >
-            {podium ? t.host.toLobby : t.host.endGame}
+            {podium ? t.host.toLobby : confirmEnd ? t.host.confirmEnd : t.host.endGame}
           </Button>
         </div>
       </nav>

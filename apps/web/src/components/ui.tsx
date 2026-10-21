@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
-import { AVATARS } from '../lib/room.ts';
+import { AVATARS } from '../lib/shared.ts';
 import { t } from '../i18n/fi.ts';
 
 export const SHAPES = ['▲', '◆', '●', '■'] as const;
@@ -65,9 +65,9 @@ export function OptionTile({
       disabled={disabled}
       aria-label={`${SHAPE_NAMES[index]}: ${text}`}
       className={`${OPTION_BG[index]} ${dim} ${ring} relative flex items-center gap-3 rounded-2xl text-left text-white shadow-lg transition
-        ${big ? 'min-h-24 px-6 py-4 text-3xl' : 'min-h-16 px-4 py-3 text-lg'} ${onClick ? 'active:scale-95 disabled:opacity-50' : ''}`}
+        ${big ? 'min-h-16 px-4 py-3 text-xl md:min-h-24 md:px-6 md:py-4 md:text-3xl' : 'min-h-16 px-4 py-3 text-lg'} ${onClick ? 'active:scale-95 disabled:opacity-50' : ''}`}
     >
-      <span className={`${big ? 'text-4xl' : 'text-2xl'} shrink-0 drop-shadow`} aria-hidden>
+      <span className={`${big ? 'text-2xl md:text-4xl' : 'text-2xl'} shrink-0 drop-shadow`} aria-hidden>
         {SHAPES[index]}
       </span>
       <span className="font-bold leading-tight">{text}</span>
@@ -100,7 +100,7 @@ export function TimerBar({
           style={{ width: `${frac * 100}%` }}
         />
       </div>
-      <span className={`tabular-nums font-black ${big ? 'text-4xl w-20' : 'text-xl w-12'} text-right ${urgent ? 'text-accent2' : ''}`}>
+      <span className={`tabular-nums font-black ${big ? 'text-2xl w-14 md:text-4xl md:w-20' : 'text-xl w-12'} text-right ${urgent ? 'text-accent2' : ''}`}>
         {paused ? '⏸' : secs}
       </span>
     </div>
