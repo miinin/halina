@@ -1,0 +1,14 @@
+{
+  "id": "oma-paketti",
+  "name": "Oma paketti",
+  "language": "fi",
+  "classic": [
+    { "id": "q1", "category": "Luokka 7B", "prompt": "Mikä on Ruotsin pääkaupunki?", "options": ["Tukholma", "Oslo", "Kööpenhamina", "Göteborg"], "correct": 0 }
+  ],
+  "estimate": [
+    { "id": "e1", "prompt": "Montako oppilasta koulussamme on?", "unit": "oppilasta", "answer": 412 }
+  ],
+  "bluff": [
+    { "id": "b1", "prompt": "Opettajamme lempiruoka on ____.", "answer": "kaalikääryleet", "accepted": ["kaalikääryle"], "houseLies": ["sushi", "makaronilaatikko", "hernekeitto"] }
+  ]
+}

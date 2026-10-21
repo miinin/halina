@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.firebase/
+*.log
+firebase-debug.*
+database-debug.log
+ui-debug.log
+test-results/
+playwright-report/
+.env.local
+.env.*.local

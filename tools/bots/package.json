@@ -1,0 +1,7 @@
+{
+  "name": "@halina/bots",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": { "firebase": "12.19.0" }
+}

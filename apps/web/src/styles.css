@@ -1,0 +1,46 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #1b1033;
+  --color-ink2: #2a1a4d;
+  --color-accent: #ffd23f;
+  --color-accent2: #ff4f8b;
+  --color-good: #3ddc97;
+  --color-bad: #ff5c5c;
+  /* vaihtoehtojen värit + muodot (värisokeille) – kontrasti valkoiselle tekstille AA */
+  --color-opt0: #d7263d;
+  --color-opt1: #1b5fd1;
+  --color-opt2: #946200;
+  --color-opt3: #17773f;
+  --font-sans: 'Nunito', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 800px at 20% -10%, #3b1f6e 0%, var(--color-ink) 60%) fixed, var(--color-ink);
+  color: #fff;
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+input,
+button {
+  font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@halina/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@halina/content": "0.1.0",
+    "@halina/engine": "0.1.0",
+    "firebase": "12.19.0",
+    "motion": "12.43.0",
+    "qrcode": "1.5.4",
+    "react": "19.1.10",
+    "react-dom": "19.1.10"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.18",
+    "@types/qrcode": "1.5.5",
+    "@types/react": "19.1.17",
+    "@types/react-dom": "19.1.11",
+    "@vitejs/plugin-react": "5.2.0",
+    "tailwindcss": "4.1.18",
+    "vite": "7.3.7"
+  }
+}

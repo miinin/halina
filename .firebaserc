@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "demo-halina",
+    "dev": "demo-halina",
+    "prod": "REPLACE_WITH_FIREBASE_PROJECT_ID"
+  }
+}

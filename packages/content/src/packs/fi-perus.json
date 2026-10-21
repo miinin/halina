@@ -1,0 +1,881 @@
+{
+ "id": "fi-perus",
+ "name": "Suomi-sekoitus",
+ "language": "fi",
+ "classic": [
+  {
+   "id": "c01",
+   "category": "Maantieto",
+   "prompt": "Mikä on Suomen pisin kokonaan Suomessa virtaava joki?",
+   "options": [
+    "Kemijoki",
+    "Oulujoki",
+    "Kymijoki",
+    "Kokemäenjoki"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c02",
+   "category": "Maantieto",
+   "prompt": "Mikä on Suomen suurin järvi?",
+   "options": [
+    "Saimaa",
+    "Päijänne",
+    "Inarijärvi",
+    "Oulujärvi"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c03",
+   "category": "Maantieto",
+   "prompt": "Mikä on Australian pääkaupunki?",
+   "options": [
+    "Canberra",
+    "Sydney",
+    "Melbourne",
+    "Perth"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c04",
+   "category": "Maantieto",
+   "prompt": "Missä maassa sijaitsee Machu Picchu?",
+   "options": [
+    "Peru",
+    "Bolivia",
+    "Chile",
+    "Meksiko"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c05",
+   "category": "Maantieto",
+   "prompt": "Mikä on maailman suurin valtameri?",
+   "options": [
+    "Tyynimeri",
+    "Atlantti",
+    "Intian valtameri",
+    "Pohjoinen jäämeri"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c06",
+   "category": "Maantieto",
+   "prompt": "Mikä on maailman korkein vuori?",
+   "options": [
+    "Mount Everest",
+    "K2",
+    "Kangchenjunga",
+    "Kilimanjaro"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c07",
+   "category": "Maantieto",
+   "prompt": "Mitä kaupunkia pidetään Suomen vanhimpana?",
+   "options": [
+    "Turku",
+    "Porvoo",
+    "Helsinki",
+    "Tampere"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c08",
+   "category": "Historia",
+   "prompt": "Minä vuonna Suomi itsenäistyi?",
+   "options": [
+    "1917",
+    "1918",
+    "1905",
+    "1920"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c09",
+   "category": "Historia",
+   "prompt": "Kuka oli Suomen ensimmäinen presidentti?",
+   "options": [
+    "K. J. Ståhlberg",
+    "P. E. Svinhufvud",
+    "C. G. E. Mannerheim",
+    "Lauri Kristian Relander"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c10",
+   "category": "Historia",
+   "prompt": "Minä vuonna Berliinin muuri murtui?",
+   "options": [
+    "1989",
+    "1991",
+    "1987",
+    "1985"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c11",
+   "category": "Historia",
+   "prompt": "Missä kaupungissa järjestettiin vuoden 1952 kesäolympialaiset?",
+   "options": [
+    "Helsinki",
+    "Tukholma",
+    "Oslo",
+    "Lontoo"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c12",
+   "category": "Tiede",
+   "prompt": "Mikä on veden kemiallinen kaava?",
+   "options": [
+    "H₂O",
+    "CO₂",
+    "H₂O₂",
+    "O₂"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c13",
+   "category": "Tiede",
+   "prompt": "Mikä planeetta tunnetaan punaisena planeettana?",
+   "options": [
+    "Mars",
+    "Venus",
+    "Jupiter",
+    "Merkurius"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c14",
+   "category": "Tiede",
+   "prompt": "Mikä on ihmiskehon suurin elin?",
+   "options": [
+    "Iho",
+    "Maksa",
+    "Aivot",
+    "Keuhkot"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c15",
+   "category": "Tiede",
+   "prompt": "Montako kromosomia ihmisellä on tavallisesti?",
+   "options": [
+    "46",
+    "23",
+    "44",
+    "48"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c16",
+   "category": "Tiede",
+   "prompt": "Mikä kaasu muodostaa suurimman osan maapallon ilmakehästä?",
+   "options": [
+    "Typpi",
+    "Happi",
+    "Hiilidioksidi",
+    "Argon"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c17",
+   "category": "Tiede",
+   "prompt": "Mikä on aurinkokunnan suurin planeetta?",
+   "options": [
+    "Jupiter",
+    "Saturnus",
+    "Neptunus",
+    "Uranus"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c18",
+   "category": "Luonto",
+   "prompt": "Mikä on Suomen kansalliseläin?",
+   "options": [
+    "Karhu",
+    "Hirvi",
+    "Susi",
+    "Ilves"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c19",
+   "category": "Luonto",
+   "prompt": "Mikä on Suomen kansalliskukka?",
+   "options": [
+    "Kielo",
+    "Ruusu",
+    "Valkovuokko",
+    "Kanerva"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c20",
+   "category": "Luonto",
+   "prompt": "Mikä on maailman nopein maaeläin?",
+   "options": [
+    "Gepardi",
+    "Leijona",
+    "Antilooppi",
+    "Strutsi"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c21",
+   "category": "Luonto",
+   "prompt": "Montako jalkaa hämähäkillä on?",
+   "options": [
+    "8",
+    "6",
+    "10",
+    "12"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c22",
+   "category": "Kulttuuri",
+   "prompt": "Kuka sävelsi Finlandian?",
+   "options": [
+    "Jean Sibelius",
+    "Oskar Merikanto",
+    "Toivo Kuula",
+    "Leevi Madetoja"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c23",
+   "category": "Kulttuuri",
+   "prompt": "Kuka kirjoitti Seitsemän veljestä?",
+   "options": [
+    "Aleksis Kivi",
+    "J. L. Runeberg",
+    "Juhani Aho",
+    "Väinö Linna"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c24",
+   "category": "Kulttuuri",
+   "prompt": "Kuka loi Muumit?",
+   "options": [
+    "Tove Jansson",
+    "Astrid Lindgren",
+    "Mauri Kunnas",
+    "Elina Karjalainen"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c25",
+   "category": "Kulttuuri",
+   "prompt": "Kuka maalasi Mona Lisan?",
+   "options": [
+    "Leonardo da Vinci",
+    "Michelangelo",
+    "Rafael",
+    "Botticelli"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c26",
+   "category": "Kulttuuri",
+   "prompt": "Mikä suomalaisyhtye voitti Euroviisut vuonna 2006?",
+   "options": [
+    "Lordi",
+    "Nightwish",
+    "HIM",
+    "The Rasmus"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c27",
+   "category": "Kulttuuri",
+   "prompt": "Kuka on Kalevalan ”vaka vanha” tietäjä ja laulaja?",
+   "options": [
+    "Väinämöinen",
+    "Ilmarinen",
+    "Lemminkäinen",
+    "Kullervo"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c28",
+   "category": "Urheilu",
+   "prompt": "Minä vuonna Suomi voitti ensimmäisen jääkiekon miesten maailmanmestaruutensa?",
+   "options": [
+    "1995",
+    "2011",
+    "2019",
+    "1992"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c29",
+   "category": "Urheilu",
+   "prompt": "Montako pelaajaa jalkapallojoukkueella on kentällä kerrallaan?",
+   "options": [
+    "11",
+    "10",
+    "9",
+    "12"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c30",
+   "category": "Urheilu",
+   "prompt": "Kuka suomalainen voitti Formula 1 -maailmanmestaruuden vuonna 2007?",
+   "options": [
+    "Kimi Räikkönen",
+    "Mika Häkkinen",
+    "Valtteri Bottas",
+    "Keke Rosberg"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c31",
+   "category": "Urheilu",
+   "prompt": "Missä lajissa Paavo Nurmi menestyi?",
+   "options": [
+    "Kestävyysjuoksu",
+    "Hiihto",
+    "Keihäänheitto",
+    "Mäkihyppy"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c32",
+   "category": "Urheilu",
+   "prompt": "Montako rengasta on olympialipussa?",
+   "options": [
+    "5",
+    "4",
+    "6",
+    "7"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c33",
+   "category": "Ruoka",
+   "prompt": "Mistä maasta pizza on kotoisin?",
+   "options": [
+    "Italia",
+    "Kreikka",
+    "Ranska",
+    "Espanja"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c34",
+   "category": "Ruoka",
+   "prompt": "Mikä on nykyään yleisin karjalanpiirakan täyte?",
+   "options": [
+    "Riisipuuro",
+    "Mannapuuro",
+    "Kaurapuuro",
+    "Kaali"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c35",
+   "category": "Ruoka",
+   "prompt": "Mikä on painoon suhteutettuna maailman kallein mauste?",
+   "options": [
+    "Sahrami",
+    "Vanilja",
+    "Kardemumma",
+    "Mustapippuri"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c36",
+   "category": "Ruoka",
+   "prompt": "Mistä maasta sushi on kotoisin?",
+   "options": [
+    "Japani",
+    "Kiina",
+    "Etelä-Korea",
+    "Thaimaa"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c37",
+   "category": "Tekniikka",
+   "prompt": "Mikä suomalaisyhtiö oli 2000-luvun alussa maailman suurin matkapuhelinvalmistaja?",
+   "options": [
+    "Nokia",
+    "Benefon",
+    "Salora",
+    "Jolla"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c38",
+   "category": "Tekniikka",
+   "prompt": "Kuka aloitti Linux-käyttöjärjestelmän ytimen kehityksen?",
+   "options": [
+    "Linus Torvalds",
+    "Bill Gates",
+    "Steve Jobs",
+    "Richard Stallman"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c39",
+   "category": "Tekniikka",
+   "prompt": "Mitä lyhenne www tarkoittaa?",
+   "options": [
+    "World Wide Web",
+    "World Wireless Web",
+    "Wide World Web",
+    "Web World Wide"
+   ],
+   "correct": 0
+  },
+  {
+   "id": "c40",
+   "category": "Kieli",
+   "prompt": "Montako kirjainta suomen aakkosissa on, kun å, ä ja ö lasketaan mukaan?",
+   "options": [
+    "29",
+    "28",
+    "26",
+    "31"
+   ],
+   "correct": 0
+  }
+ ],
+ "estimate": [
+  {
+   "id": "e01",
+   "category": "Kulttuuri",
+   "prompt": "Montako saunaa Suomessa on arviolta?",
+   "unit": "saunaa",
+   "answer": 3300000
+  },
+  {
+   "id": "e02",
+   "category": "Maantieto",
+   "prompt": "Montako yli viiden aarin järveä Suomessa on?",
+   "unit": "järveä",
+   "answer": 187888
+  },
+  {
+   "id": "e03",
+   "category": "Maantieto",
+   "prompt": "Kuinka korkea on Eiffel-torni antenneineen?",
+   "unit": "m",
+   "answer": 330
+  },
+  {
+   "id": "e04",
+   "category": "Historia",
+   "prompt": "Minä vuonna ensimmäinen Kalevala (ns. Vanha Kalevala) julkaistiin?",
+   "unit": "",
+   "answer": 1835
+  },
+  {
+   "id": "e05",
+   "category": "Tiede",
+   "prompt": "Montako luuta aikuisen ihmisen kehossa on?",
+   "unit": "luuta",
+   "answer": 206
+  },
+  {
+   "id": "e06",
+   "category": "Maantieto",
+   "prompt": "Kuinka pitkä on Suomen ja Venäjän välinen maaraja?",
+   "unit": "km",
+   "answer": 1340
+  },
+  {
+   "id": "e07",
+   "category": "Yhteiskunta",
+   "prompt": "Montako asukasta Suomessa on (pyöristettynä, 2024)?",
+   "unit": "asukasta",
+   "answer": 5600000
+  },
+  {
+   "id": "e08",
+   "category": "Maantieto",
+   "prompt": "Kuinka korkea on Haltin huippu Suomen puolella?",
+   "unit": "m",
+   "answer": 1324
+  },
+  {
+   "id": "e09",
+   "category": "Maantieto",
+   "prompt": "Kuinka pitkä on automatka Helsingistä Rovaniemelle?",
+   "unit": "km",
+   "answer": 830
+  },
+  {
+   "id": "e10",
+   "category": "Tiede",
+   "prompt": "Kuinka kauan valolla kestää kulkea Auringosta Maahan?",
+   "unit": "minuuttia",
+   "answer": 8.3
+  },
+  {
+   "id": "e11",
+   "category": "Tiede",
+   "prompt": "Mikä on Kuun keskimääräinen etäisyys Maasta?",
+   "unit": "km",
+   "answer": 384400
+  },
+  {
+   "id": "e12",
+   "category": "Historia",
+   "prompt": "Minä vuonna ihminen kävi ensimmäisen kerran Kuussa?",
+   "unit": "",
+   "answer": 1969
+  },
+  {
+   "id": "e13",
+   "category": "Yhteiskunta",
+   "prompt": "Montako jäsenvaltiota YK:lla on?",
+   "unit": "maata",
+   "answer": 193
+  },
+  {
+   "id": "e14",
+   "category": "Tiede",
+   "prompt": "Montako hammasta aikuisella on viisaudenhampaat mukaan lukien?",
+   "unit": "hammasta",
+   "answer": 32
+  },
+  {
+   "id": "e15",
+   "category": "Maantieto",
+   "prompt": "Mikä on Suomen pinta-ala?",
+   "unit": "km²",
+   "answer": 338455
+  },
+  {
+   "id": "e16",
+   "category": "Maantieto",
+   "prompt": "Montako saarta Suomessa on?",
+   "unit": "saarta",
+   "answer": 178947
+  },
+  {
+   "id": "e17",
+   "category": "Historia",
+   "prompt": "Minä vuonna Nokia perustettiin?",
+   "unit": "",
+   "answer": 1865
+  },
+  {
+   "id": "e18",
+   "category": "Yhteiskunta",
+   "prompt": "Montako jäsenvaltiota Euroopan unionissa on?",
+   "unit": "maata",
+   "answer": 27
+  },
+  {
+   "id": "e19",
+   "category": "Urheilu",
+   "prompt": "Kuinka pitkä on maratonin virallinen matka?",
+   "unit": "m",
+   "answer": 42195
+  },
+  {
+   "id": "e20",
+   "category": "Maantieto",
+   "prompt": "Mikä on maapallon ympärysmitta päiväntasaajalla?",
+   "unit": "km",
+   "answer": 40075
+  }
+ ],
+ "bluff": [
+  {
+   "id": "b01",
+   "prompt": "Suomen ensimmäinen ____ avattiin Helsingissä vuonna 1982.",
+   "answer": "metro",
+   "accepted": [
+    "metrolinja",
+    "maanalainen"
+   ],
+   "houseLies": [
+    "pizzeria",
+    "liukuporras",
+    "hampurilaisravintola"
+   ]
+  },
+  {
+   "id": "b02",
+   "prompt": "Ruotsin sana ”smultron” tarkoittaa suomeksi ____.",
+   "answer": "metsämansikka",
+   "accepted": [
+    "metsämansikkaa",
+    "ahomansikka"
+   ],
+   "houseLies": [
+    "mustikka",
+    "voileipä",
+    "pieni kahvikuppi"
+   ]
+  },
+  {
+   "id": "b03",
+   "prompt": "Wombatin uloste on muodoltaan ____.",
+   "answer": "kuutio",
+   "accepted": [
+    "kuutiomainen",
+    "kuution muotoinen",
+    "kuutioita",
+    "neliskulmainen"
+   ],
+   "houseLies": [
+    "spiraali",
+    "tähti",
+    "sydän"
+   ]
+  },
+  {
+   "id": "b04",
+   "prompt": "Mustekalalla on ____ sydäntä.",
+   "answer": "kolme",
+   "accepted": [
+    "3"
+   ],
+   "houseLies": [
+    "viisi",
+    "yhdeksän",
+    "kaksitoista"
+   ]
+  },
+  {
+   "id": "b05",
+   "prompt": "Skotlannin kansalliseläin on ____.",
+   "answer": "yksisarvinen",
+   "accepted": [
+    "yksisarvisen"
+   ],
+   "houseLies": [
+    "saukko",
+    "punahirvi",
+    "ylämaankarja"
+   ]
+  },
+  {
+   "id": "b06",
+   "prompt": "Kasvitieteellisesti banaani on ____.",
+   "answer": "marja",
+   "accepted": [
+    "marjoja",
+    "marjahedelmä"
+   ],
+   "houseLies": [
+    "palkokasvi",
+    "sitrushedelmä",
+    "pähkinä"
+   ]
+  },
+  {
+   "id": "b07",
+   "prompt": "Eiffel-torni voi olla kesällä jopa noin ____ senttimetriä korkeampi kuin talvella.",
+   "answer": "15",
+   "accepted": [
+    "viisitoista"
+   ],
+   "houseLies": [
+    "2",
+    "40",
+    "70"
+   ]
+  },
+  {
+   "id": "b08",
+   "prompt": "Euroopan ankeriaat lisääntyvät ____.",
+   "answer": "Sargassomerellä",
+   "accepted": [
+    "sargassomeri",
+    "sargassomerella",
+    "Sargassomerellä"
+   ],
+   "houseLies": [
+    "Itämerellä",
+    "Välimerellä",
+    "Mustallamerellä"
+   ]
+  },
+  {
+   "id": "b09",
+   "prompt": "Ranskan Falaisessa teloitettiin vuonna 1386 julkisesti ____.",
+   "answer": "sika",
+   "accepted": [
+    "possu",
+    "porsas",
+    "emakko",
+    "emäsika"
+   ],
+   "houseLies": [
+    "kissa",
+    "kukko",
+    "papukaija"
+   ]
+  },
+  {
+   "id": "b10",
+   "prompt": "Norjan kuninkaallinen kaarti on ylentänyt useaan kertaan kunniajäsenensä, joka on ____ nimeltä Sir Nils Olav.",
+   "answer": "pingviini",
+   "accepted": [
+    "kuningaspingviini"
+   ],
+   "houseLies": [
+    "hirvi",
+    "poro",
+    "bernhardinkoira"
+   ]
+  },
+  {
+   "id": "b11",
+   "prompt": "Toisin kuin usein väitetään, Kiinan muuria ei erota paljaalla silmällä ____.",
+   "answer": "Kuusta",
+   "accepted": [
+    "kuu",
+    "kuun pinnalta",
+    "kuusta käsin"
+   ],
+   "houseLies": [
+    "lentokoneesta",
+    "kuumailmapallosta",
+    "naapurikylästä"
+   ]
+  },
+  {
+   "id": "b12",
+   "prompt": "Maailman ensimmäinen tekstiviesti lähetettiin vuonna 1992, ja se kuului: ____.",
+   "answer": "Merry Christmas",
+   "accepted": [
+    "hyvää joulua",
+    "merry xmas"
+   ],
+   "houseLies": [
+    "Hello world",
+    "Testi testi",
+    "Can you hear me"
+   ]
+  },
+  {
+   "id": "b13",
+   "prompt": "Hunaja säilyy lähes ikuisesti: arkeologit ovat löytäneet yhä syömäkelpoista hunajaa ____.",
+   "answer": "egyptiläisistä haudoista",
+   "accepted": [
+    "egyptin haudoista",
+    "pyramideista",
+    "faraoiden haudoista",
+    "muinaisegyptiläisistä haudoista",
+    "egyptiläisestä haudasta"
+   ],
+   "houseLies": [
+    "viikinkilaivan hylystä",
+    "Pompeijin raunioista",
+    "jäätikön sisältä"
+   ]
+  },
+  {
+   "id": "b14",
+   "prompt": "Flamingot ovat vaaleanpunaisia, koska ne ____.",
+   "answer": "syövät katkarapuja",
+   "accepted": [
+    "syövät äyriäisiä",
+    "syövät leviä",
+    "syövät katkarapuja ja leviä",
+    "ravintonsa takia",
+    "ruokavalionsa takia"
+   ],
+   "houseLies": [
+    "seisovat yhdellä jalalla",
+    "kylpevät mudassa",
+    "nukkuvat auringossa"
+   ]
+  },
+  {
+   "id": "b15",
+   "prompt": "Tutkimusten mukaan lehmillä on usein ____, joista erossa ne stressaantuvat.",
+   "answer": "parhaat ystävät",
+   "accepted": [
+    "paras ystävä",
+    "ystäviä",
+    "parhaita ystäviä",
+    "bestikset"
+   ],
+   "houseLies": [
+    "lempilaulut",
+    "omat vakiopaikat",
+    "lempivärit"
+   ]
+  },
+  {
+   "id": "b16",
+   "prompt": "Jääkarhun iho turkin alla on väriltään ____.",
+   "answer": "musta",
+   "accepted": [
+    "mustaa",
+    "tumma"
+   ],
+   "houseLies": [
+    "vaaleanpunainen",
+    "sininen",
+    "läpinäkyvä"
+   ]
+  },
+  {
+   "id": "b17",
+   "prompt": "Ruotsissa kahvi oli 1700-luvulla useaan otteeseen ____.",
+   "answer": "kielletty",
+   "accepted": [
+    "kiellettyä",
+    "laitonta",
+    "kiellossa",
+    "laiton"
+   ],
+   "houseLies": [
+    "verotonta",
+    "myynnissä vain apteekeissa",
+    "vain kuninkaan juoma"
+   ]
+  }
+ ]
+}
