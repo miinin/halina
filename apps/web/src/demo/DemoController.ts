@@ -9,6 +9,7 @@ import {
   moderate,
   rematch as rematchGame,
   removePlayer,
+  syncPlayers,
   stepKey,
   validateInput,
   type GameState,
@@ -21,7 +22,7 @@ import type { FreeText, HostLike, RawInput } from '../host/controller.ts';
 import { AVATAR_IDS, lobbyState, type PlayerRow, type StateRow } from '../lib/shared.ts';
 
 export const ME = 'me';
-const BOT_NAMES = ['Aino', 'Eetu', 'Siiri', 'Onni', 'Venla', 'Leevi', 'Helmi', 'Topi'];
+const BOT_NAMES = ['Botti Aino', 'Botti Eetu', 'Botti Siiri', 'Botti Onni', 'Botti Venla', 'Botti Leevi', 'Botti Helmi', 'Botti Topi'];
 const ALL_ANSWERED_GRACE_MS = 700;
 
 /**
@@ -29,7 +30,9 @@ const ALL_ANSWERED_GRACE_MS = 700;
  * tilalla on muistissa pyörivä tila ja muut pelaajat ovat botteja.
  */
 export class DemoController implements HostLike {
-  readonly code = 'DEMO';
+  readonly code: string;
+  readonly accuracy: number;
+  kicked = new Set<Uid>();
   game: GameState | null = null;
   roster: Record<Uid, PlayerRow> = {};
   inputs: Record<Uid, RawInput> = {};
@@ -39,30 +42,59 @@ export class DemoController implements HostLike {
   error: string | null = null;
   pack: QuestionPack | null = null;
 
-  private listeners = new Set<() => void>();
+  protected listeners = new Set<() => void>();
   private timers: ReturnType<typeof setTimeout>[] = [];
   private loop: ReturnType<typeof setInterval>;
   private lastInputAt = 0;
 
-  constructor(
-    name: string,
-    avatar: string,
-    botCount: number,
-    readonly accuracy = 0.55,
-  ) {
-    this.roster[ME] = { name, avatar, score: 0, alive: true, connected: true, joinedAt: 0 };
-    const avatars = AVATAR_IDS.filter((a) => a !== avatar);
-    for (let i = 0; i < botCount; i++) {
-      this.roster[`bot${i}`] = {
+  constructor(opts: { me?: { name: string; avatar: string }; bots: number; accuracy?: number; code?: string }) {
+    this.code = opts.code ?? 'DEMO';
+    this.accuracy = opts.accuracy ?? 0.55;
+    if (opts.me) this.roster[ME] = { ...opts.me, score: 0, alive: true, connected: true, joinedAt: 0 };
+    this.setBots(opts.bots);
+    this.loop = setInterval(() => this.tick(), 200);
+  }
+
+  /** Bottien määrä aulassa (pelin aikana ei muuteta). */
+  setBots(n: number) {
+    if (this.game) return;
+    const taken = new Set(Object.values(this.roster).map((r) => r.avatar));
+    const roster = Object.fromEntries(Object.entries(this.roster).filter(([uid]) => !uid.startsWith('bot')));
+    const colors = AVATAR_IDS.filter((a) => !taken.has(a));
+    for (let i = 0; i < n; i++) {
+      roster[`bot${i}`] = {
         name: BOT_NAMES[i % BOT_NAMES.length],
-        avatar: avatars[(i * 3) % avatars.length],
+        avatar: colors[(i * 3) % Math.max(colors.length, 1)] ?? AVATAR_IDS[i],
         score: 0,
         alive: true,
         connected: true,
-        joinedAt: i + 1,
+        joinedAt: 1000 + i,
       };
     }
-    this.loop = setInterval(() => this.tick(), 200);
+    this.roster = roster;
+    this.emit();
+  }
+
+  /** Etäpelaaja liittyi, vaihtoi nimeä tai yhteys katkesi/palasi. */
+  upsertPlayer(uid: Uid, info: { name: string; avatar: string }, connected: boolean) {
+    const cur = this.roster[uid];
+    if (cur && cur.name === info.name && cur.avatar === info.avatar && cur.connected === connected) return;
+    this.roster = {
+      ...this.roster,
+      [uid]: cur ? { ...cur, ...info, connected } : { ...info, score: 0, alive: true, connected, joinedAt: Date.now() },
+    };
+    if (this.game) {
+      this.game = syncPlayers(
+        this.game,
+        Object.fromEntries(Object.entries(this.roster).map(([u, r]) => [u, { name: r.name, avatar: r.avatar, connected: r.connected !== false }])),
+      );
+    }
+    this.emit();
+  }
+
+  setConnected(uid: Uid, connected: boolean) {
+    const cur = this.roster[uid];
+    if (cur) this.upsertPlayer(uid, { name: cur.name, avatar: cur.avatar }, connected);
   }
 
   dispose() {
@@ -79,7 +111,7 @@ export class DemoController implements HostLike {
     return () => void this.listeners.delete(fn);
   }
 
-  private emit() {
+  protected emit() {
     this.listeners.forEach((f) => f());
   }
 
@@ -113,7 +145,7 @@ export class DemoController implements HostLike {
     const step = stepKey(g);
     const key = answerKey(g);
     for (const p of Object.values(g.players)) {
-      if (p.uid === ME || !inAudience(phase.audience, p)) continue;
+      if (!p.uid.startsWith('bot') || !inAudience(phase.audience, p)) continue;
       const delay = Math.min(700 + Math.random() * phase.durationMs * 0.55, Math.max(300, phase.durationMs - 1200));
       const fire = () => {
         if (this.state?.stepKey !== step || !this.game) return;
@@ -240,6 +272,7 @@ export class DemoController implements HostLike {
   async kick(uid: Uid) {
     const { [uid]: _, ...rest } = this.roster;
     this.roster = rest;
+    this.kicked.add(uid);
     if (this.game) this.game = removePlayer(this.game, uid);
     this.emit();
   }

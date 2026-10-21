@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { expectedResponders, validateInput, type Player } from '@halina/engine';
 import { t } from '../i18n/fi.ts';
+import { Icon } from '../components/icons.tsx';
 import { Avatar, Delta, OptionTile, PlayerChip, Pop, TimerBar } from '../components/ui.tsx';
 import type { HostLike as HostController } from './controller.ts';
 
@@ -49,7 +50,7 @@ export function Stage({ ctrl }: { ctrl: HostController }) {
       {s && s.durationMs > 0 && <TimerBar remainingMs={remaining} durationMs={s.durationMs} paused={s.paused} big />}
       {s?.paused && (
         <div className="absolute inset-x-0 top-28 z-20 mx-auto w-fit rounded-2xl bg-accent px-8 py-3 text-xl md:text-3xl font-black text-ink shadow-xl">
-          ⏸ {t.common.paused}
+          <Icon.pause /> {t.common.paused}
         </div>
       )}
       <AnimatePresence mode="wait">
@@ -83,7 +84,7 @@ function Answered({ ctrl }: { ctrl: HostController }) {
           className="inline-flex"
           title={g.players[uid]?.name}
         >
-          <Avatar id={g.players[uid]?.avatar ?? ''} ghost={g.players[uid]?.alive === false} />
+          <Avatar id={g.players[uid]?.avatar ?? ''} name={g.players[uid]?.name} ghost={g.players[uid]?.alive === false} />
         </motion.span>
       ))}
     </div>
@@ -145,15 +146,15 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
           {view.final && (
-            <motion.div initial={{ scale: 3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-2xl md:text-4xl font-black tracking-[0.4em] text-accent2">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="eyebrow text-base text-accent2 md:text-xl">
               {t.common.final}
             </motion.div>
           )}
           <div className="text-xl md:text-3xl text-white/60">{t.common.round(view.round, view.totalRounds)}</div>
           <motion.h1
-            initial={{ scale: 0.6, opacity: 0, rotate: -4 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            transition={{ type: 'spring', stiffness: 120, damping: 12 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
             className="text-6xl md:text-[8rem] leading-none font-black text-accent"
           >
             {m.name}
@@ -198,14 +199,14 @@ function View(ctx: StageCtx) {
                 <span className="font-black text-good">{t.stage.allSafe}</span>
               ) : (
                 <>
-                  <span className="font-black text-accent2">🕯️ {t.stage.toCellar}:</span>
+                  <span className="eyebrow text-accent2">{t.stage.toCellar}</span>
                   {(view.cellar as string[]).map((u) => (
                     <PlayerChip key={u} p={players[u]} />
                   ))}
                 </>
               )}
               {(view.revived as string[]).map((u) => (
-                <PlayerChip key={u} p={players[u]} extra={<span className="text-good">✨ {t.stage.revived}</span>} />
+                <PlayerChip key={u} p={players[u]} extra={<span className="text-good">{t.stage.revived}</span>} />
               ))}
             </div>
           )}
@@ -213,7 +214,7 @@ function View(ctx: StageCtx) {
             players={players}
             rows={Object.entries(results)
               .filter(([, r]) => r.points > 0)
-              .map(([uid, r]) => ({ uid, delta: r.points, note: r.streak && r.streak > 1 ? <span>🔥{r.streak}</span> : null }))}
+              .map(([uid, r]) => ({ uid, delta: r.points, note: r.streak && r.streak > 1 ? <span className="tabular-nums text-accent">×{r.streak}</span> : null }))}
           />
           <Options view={view} reveal />
         </div>
@@ -224,7 +225,7 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-4">
           <div className="text-xl md:text-3xl text-white/60">{t.stage.category}</div>
-          <motion.div initial={{ scale: 0.3 }} animate={{ scale: 1 }} className="text-6xl md:text-9xl font-black text-accent">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-6xl md:text-9xl font-black text-accent">
             {view.category}
           </motion.div>
         </div>
@@ -234,8 +235,8 @@ function View(ctx: StageCtx) {
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
           <div className="text-3xl md:text-5xl font-black text-accent">{view.category}</div>
-          <motion.h1 animate={{ scale: [1, 1.06, 1] }} transition={{ repeat: Infinity, duration: 1.2 }} className="text-5xl md:text-8xl font-black">
-            💰 {t.stage.wagerNow}
+          <motion.h1 className="text-5xl md:text-8xl font-black">
+            {t.stage.wagerNow}
           </motion.h1>
           <p className="text-xl md:text-3xl text-white/70">{t.stage.wagerHint}</p>
         </div>
@@ -251,7 +252,7 @@ function View(ctx: StageCtx) {
               <Pop delay={0.8} className="rounded-3xl bg-good/20 p-5 text-center">
                 <div className="text-xl text-good">{t.stage.biggestWin}</div>
                 <div className="text-xl md:text-3xl font-black">
-                  <Avatar id={players[view.biggestWin]?.avatar ?? ''} /> {players[view.biggestWin]?.name}{' '}
+                  <Avatar id={players[view.biggestWin]?.avatar ?? ''} name={players[view.biggestWin]?.name} /> {players[view.biggestWin]?.name}{' '}
                   <Delta n={results[view.biggestWin].delta} />
                 </div>
               </Pop>
@@ -260,7 +261,7 @@ function View(ctx: StageCtx) {
               <Pop delay={1.1} className="rounded-3xl bg-bad/20 p-5 text-center">
                 <div className="text-xl text-bad">{t.stage.biggestLoss}</div>
                 <div className="text-xl md:text-3xl font-black">
-                  <Avatar id={players[view.biggestLoss]?.avatar ?? ''} /> {players[view.biggestLoss]?.name}{' '}
+                  <Avatar id={players[view.biggestLoss]?.avatar ?? ''} name={players[view.biggestLoss]?.name} /> {players[view.biggestLoss]?.name}{' '}
                   <Delta n={results[view.biggestLoss].delta} />
                 </div>
               </Pop>
@@ -271,7 +272,7 @@ function View(ctx: StageCtx) {
             rows={Object.entries(results).map(([uid, r]) => ({
               uid,
               delta: r.delta,
-              note: <span className="text-white/60">{r.floor ? '🛟' : '💰'}{r.amount.toLocaleString('fi-FI')}</span>,
+              note: <span className="text-white/60">{r.floor ? 'pohja ' : 'panos '}{r.amount.toLocaleString('fi-FI')}</span>,
             }))}
           />
           <Options view={{ ...view, counts: undefined }} reveal />
@@ -282,7 +283,7 @@ function View(ctx: StageCtx) {
     case 'bluff-write':
       return (
         <div className="flex flex-1 flex-col items-center justify-center gap-8">
-          <Title sub={`✍️ ${t.stage.writeLie}`}>{view.prompt}</Title>
+          <Title sub={t.stage.writeLie}>{view.prompt}</Title>
         </div>
       );
 
@@ -324,15 +325,15 @@ function View(ctx: StageCtx) {
           )}
           <div className="flex flex-wrap justify-center gap-4">
             {(v.dead as string[]).map((u, i) => (
-              <motion.div key={u} initial={{ y: 0 }} animate={{ y: [0, -20, 0], rotate: [0, -8, 8, 0] }} transition={{ delay: 0.5 + i * 0.3 }}>
+              <motion.div key={u} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + i * 0.3 }}>
                 <div className="rounded-3xl bg-bad/20 px-6 py-4 text-xl md:text-3xl font-black">
-                  👻 {players[u]?.name} <div className="text-lg font-normal text-bad">{t.stage.died}</div>
+                  <Avatar id={players[u]?.avatar ?? ''} name={players[u]?.name} ghost /> {players[u]?.name} <div className="text-lg font-normal text-bad">{t.stage.died}</div>
                 </div>
               </motion.div>
             ))}
             {(v.survivors as string[]).map((u) => (
               <div key={u} className="rounded-3xl bg-good/20 px-6 py-4 text-xl md:text-3xl font-black">
-                <Avatar id={players[u]?.avatar ?? ''} /> {players[u]?.name}
+                <Avatar id={players[u]?.avatar ?? ''} name={players[u]?.name} /> {players[u]?.name}
                 <div className="text-lg font-normal text-good">{v.spared === u ? t.stage.spared : t.stage.survived}</div>
               </div>
             ))}
@@ -358,8 +359,8 @@ function View(ctx: StageCtx) {
         <div className="flex flex-1 flex-col items-center justify-center gap-10">
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-16">
             <Duelist p={players[view.a]} side="left" />
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1, rotate: [0, 10, -10, 0] }} className="text-5xl md:text-8xl font-black text-accent2">
-              ⚔️
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-3xl md:text-6xl font-black text-paper/40">
+              VS
             </motion.div>
             <Duelist p={players[view.b]} side="right" />
           </div>
@@ -415,8 +416,8 @@ function View(ctx: StageCtx) {
             </div>
           )}
           <div className="text-xl md:text-3xl text-white/60">{t.stage.winner}</div>
-          <motion.div initial={{ scale: 0.3 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
-            <Avatar id={players[r.winner]?.avatar ?? ''} size="xl" />
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <Avatar id={players[r.winner]?.avatar ?? ''} name={players[r.winner]?.name} size="xl" />
             <div className="text-5xl md:text-7xl font-black text-accent">{players[r.winner]?.name}</div>
           </motion.div>
           <div className="text-xl md:text-3xl">
@@ -425,7 +426,7 @@ function View(ctx: StageCtx) {
           {bettors.length > 0 && (
             <div className="flex flex-wrap justify-center gap-3">
               {bettors.map(([u, b]) => (
-                <PlayerChip key={u} p={players[u]} extra={b.correct ? <Delta n={300} /> : <span className="text-white/40">✕</span>} />
+                <PlayerChip key={u} p={players[u]} extra={b.correct ? <Delta n={300} /> : <span className="text-white/40">–</span>} />
               ))}
             </div>
           )}
@@ -452,7 +453,7 @@ function Duelist({ p, side }: { p: Player | undefined; side: 'left' | 'right' })
       transition={{ type: 'spring', stiffness: 90 }}
       className="flex flex-col items-center gap-3"
     >
-      <Avatar id={p?.avatar ?? ''} size="xl" />
+      <Avatar id={p?.avatar ?? ''} name={p?.name} size="xl" />
       <div className="text-4xl md:text-6xl font-black">{p?.name}</div>
       <div className="text-2xl text-white/60">{t.common.points(p?.score ?? 0)}</div>
     </motion.div>
@@ -463,13 +464,13 @@ function DuelScore({ view, players }: { view: V; players: Record<string, Player>
   return (
     <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6 text-xl md:text-3xl font-black">
       <span>
-        <Avatar id={players[view.a]?.avatar ?? ''} /> {players[view.a]?.name}
+        <Avatar id={players[view.a]?.avatar ?? ''} name={players[view.a]?.name} /> {players[view.a]?.name}
       </span>
       <span className="rounded-xl bg-white/10 px-5 py-1 tabular-nums">
         {view.wins[view.a]} – {view.wins[view.b]}
       </span>
       <span>
-        {players[view.b]?.name} <Avatar id={players[view.b]?.avatar ?? ''} />
+        {players[view.b]?.name} <Avatar id={players[view.b]?.avatar ?? ''} name={players[view.b]?.name} />
       </span>
     </div>
   );
@@ -495,7 +496,7 @@ function BluffReveal({ view, players, elapsed }: StageCtx) {
             <div className="text-3xl md:text-5xl font-black">{cur.text}</div>
             {cur.choosers.length > 0 ? (
               <div className="flex flex-wrap items-center justify-center gap-2 text-xl">
-                <span className="text-white/60">{cur.truth ? '✓' : t.stage.fellFor}:</span>
+                <span className="text-white/60">{cur.truth ? t.stage.foundTruth : t.stage.fellFor}:</span>
                 {cur.choosers.map((u) => (
                   <PlayerChip key={u} p={players[u]} />
                 ))}
@@ -507,7 +508,7 @@ function BluffReveal({ view, players, elapsed }: StageCtx) {
               {cur.truth ? (
                 <div className="text-4xl md:text-6xl font-black tracking-widest text-good">{t.stage.truth}</div>
               ) : cur.house ? (
-                <div className="text-xl md:text-3xl font-bold text-white/70">🏠 {t.stage.houseLie}</div>
+                <div className="text-xl md:text-3xl font-bold text-white/70">{t.stage.houseLie}</div>
               ) : (
                 <div className="flex items-center gap-3 text-xl md:text-3xl font-bold">
                   {t.stage.lieBy}
@@ -532,14 +533,20 @@ function BluffReveal({ view, players, elapsed }: StageCtx) {
 function Cellar({ view, players }: StageCtx) {
   const ch = t.challenges[view.challenge as keyof typeof t.challenges];
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6 bg-[radial-gradient(circle_at_center,rgba(255,79,139,0.15),transparent_60%)] text-center">
-      <motion.div animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 2 }} className="text-5xl md:text-7xl">
-        🕯️
-      </motion.div>
-      <h1 className="text-5xl md:text-7xl font-black tracking-[0.3em] text-accent2">{t.stage.cellarTitle}</h1>
+    <div className="flex flex-1 flex-col items-center justify-center gap-6 bg-[radial-gradient(circle_at_center,rgba(232,96,60,0.12),transparent_60%)] text-center">
+      
+      <h1 className="eyebrow text-xl text-accent2 md:text-2xl">{t.stage.cellarTitle}</h1>
       <div className="text-3xl md:text-5xl font-black">{ch.name}</div>
       <p className="max-w-3xl text-xl md:text-3xl text-white/80">{ch.rule}</p>
-      {view.challenge === 'doors' && <div className="text-6xl md:text-9xl tracking-[0.5em]">🚪🚪🚪</div>}
+      {view.challenge === 'doors' && (
+        <div className="flex gap-6">
+          {[1, 2, 3].map((n) => (
+            <div key={n} className="grid h-40 w-24 place-items-end justify-center rounded-t-[3rem] border-2 border-paper/30 bg-ink2 pb-4 md:h-56 md:w-32">
+              <span className="tabular-nums text-3xl">{n}</span>
+            </div>
+          ))}
+        </div>
+      )}
       {view.challenge === 'math' && (
         <div className="flex flex-wrap justify-center gap-4 md:gap-10 text-3xl md:text-5xl font-black tabular-nums">
           {(view.problems as string[]).map((p) => (
@@ -583,7 +590,7 @@ function EstimateReveal({ view, players, elapsed }: StageCtx) {
             className="absolute flex -translate-x-1/2 flex-col items-center"
             style={{ left: `${pos(g.guess)}%`, top: i % 2 ? '58%' : '0%' }}
           >
-            <Avatar id={players[g.uid]?.avatar ?? ''} />
+            <Avatar id={players[g.uid]?.avatar ?? ''} name={players[g.uid]?.name} />
             <span className="text-sm font-bold whitespace-nowrap">{players[g.uid]?.name}</span>
             <span className="text-xs text-white/60 tabular-nums">{g.guess.toLocaleString('fi-FI')}</span>
           </motion.div>
@@ -632,7 +639,7 @@ function Scoreboard({ view, players }: StageCtx) {
             className={`flex items-center gap-4 rounded-2xl px-5 py-3 text-xl md:text-3xl ${i === 0 ? 'bg-accent text-ink' : 'bg-white/10'}`}
           >
             <span className="w-10 font-black tabular-nums">{r.rank}.</span>
-            <Avatar id={players[r.uid]?.avatar ?? ''} />
+            <Avatar id={players[r.uid]?.avatar ?? ''} name={players[r.uid]?.name} />
             <span className="flex-1 truncate font-bold">{players[r.uid]?.name}</span>
             {r.delta !== 0 && <Delta n={r.delta} className={`text-2xl ${i === 0 ? '!text-ink' : ''}`} />}
             <span className="w-24 md:w-40 text-right font-black tabular-nums">{r.score.toLocaleString('fi-FI')}</span>
@@ -655,7 +662,7 @@ function Podium({ view, players }: StageCtx) {
   const heights = ['h-40 md:h-64', 'h-32 md:h-48', 'h-24 md:h-36'];
   return (
     <div className="flex flex-1 flex-col items-center gap-8">
-      <h1 className="text-4xl md:text-6xl font-black">🏆 {t.stage.podium}</h1>
+      <h1 className="text-4xl md:text-6xl font-black">{t.stage.podium}</h1>
       <div className="flex items-end gap-2 md:gap-6">
         {order.map((r) => {
           const place = ranking.indexOf(r);
@@ -667,7 +674,7 @@ function Podium({ view, players }: StageCtx) {
               transition={{ delay: 0.6 * (2 - place) + 0.3, type: 'spring' }}
               className="flex w-24 flex-col items-center gap-2 sm:w-40 md:w-64"
             >
-              <Avatar id={players[r.uid]?.avatar ?? ''} size={place === 0 ? 'xl' : 'lg'} />
+              <Avatar id={players[r.uid]?.avatar ?? ''} name={players[r.uid]?.name} size={place === 0 ? 'xl' : 'lg'} />
               <div className="text-2xl md:text-4xl font-black">{players[r.uid]?.name}</div>
               <div className="text-2xl tabular-nums text-white/70">{r.score.toLocaleString('fi-FI')}</div>
               <div className={`${heights[place]} flex w-full items-start justify-center rounded-t-3xl pt-4 text-4xl md:text-6xl font-black ${place === 0 ? 'bg-accent text-ink' : 'bg-white/15'}`}>
@@ -680,12 +687,12 @@ function Podium({ view, players }: StageCtx) {
       {awards.length > 0 && (
         <Pop delay={2.4} className="w-full max-w-5xl">
           <h2 className="mb-3 text-center text-xl md:text-3xl font-black text-white/70">{t.stage.awards}</h2>
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="flex flex-wrap justify-center gap-3">
             {awards.map((a) => (
-              <div key={a.id} className="rounded-2xl bg-white/10 p-4 text-center">
+              <div key={a.id} className="w-56 rounded-xl border border-line bg-ink2/70 p-4 text-center">
                 <div className="text-lg font-bold text-accent">{t.awards[a.id].title}</div>
                 <div className="text-2xl font-black">
-                  <Avatar id={players[a.uid]?.avatar ?? ''} size="sm" /> {players[a.uid]?.name}
+                  <Avatar id={players[a.uid]?.avatar ?? ''} name={players[a.uid]?.name} size="sm" /> {players[a.uid]?.name}
                 </div>
                 <div className="text-sm text-white/60">
                   {a.id === 'bravest' ? Math.round(a.value * 100) : a.value} {t.awards[a.id].unit}

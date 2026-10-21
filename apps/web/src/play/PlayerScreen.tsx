@@ -52,7 +52,7 @@ export function PlayerScreen({
   return (
     <div className="mx-auto flex min-h-full max-w-md flex-col">
       <header className="sticky top-0 z-10 flex items-center gap-3 bg-ink/80 px-4 py-3 backdrop-blur">
-        <Avatar id={me.avatar} size="md" ghost={!me.alive} />
+        <Avatar id={me.avatar} name={me.name} size="md" ghost={!me.alive} />
         <div className="min-w-0 flex-1">
           <div className="truncate font-bold">{me.name}</div>
           <div className="text-sm text-white/60">{code}</div>
@@ -110,7 +110,7 @@ function Sent({ ctx }: { ctx: Ctx }) {
   if (ctx.sent === undefined || ctx.sent === null) return null;
   return (
     <p className="text-center font-semibold text-good">
-      ✓ {t.play.sent}
+      {t.play.sent}
       {ctx.canAnswer && <span className="block text-sm font-normal text-white/60">{t.play.change}</span>}
     </p>
   );
@@ -125,7 +125,7 @@ function PhaseBody(ctx: Ctx) {
       return (
         <Big>
           <Pop>
-            <Avatar id={me.avatar} size="xl" />
+            <Avatar id={me.avatar} name={me.name} size="xl" />
           </Pop>
           <div className="text-3xl font-black">{t.play.joined}</div>
           <div className="text-lg font-normal text-white/70">{t.play.waitStart}</div>
@@ -170,7 +170,6 @@ function PhaseBody(ctx: Ctx) {
       if (notMine)
         return (
           <Big>
-            <div className="text-4xl">🕯️</div>
             <div>{t.stage.cellarTitle}</div>
             <div className="flex flex-wrap justify-center gap-2 text-base">
               {(view.cellar as string[]).map((u) => (
@@ -204,7 +203,7 @@ function PhaseBody(ctx: Ctx) {
               onClick={() => ctx.send(u)}
               className={`${i === 0 ? 'bg-opt0' : 'bg-opt1'} flex min-h-24 items-center justify-center gap-3 rounded-2xl text-2xl font-black ${ctx.sent === u ? 'ring-4 ring-white' : ''}`}
             >
-              <Avatar id={ctx.players[u]?.avatar ?? ''} /> {ctx.players[u]?.name}
+              <Avatar id={ctx.players[u]?.avatar ?? ''} name={ctx.players[u]?.name} /> {ctx.players[u]?.name}
             </button>
           ))}
           <Sent ctx={ctx} />
@@ -280,7 +279,7 @@ function WagerInput({ ctx }: { ctx: Ctx }) {
       )}
       {sentAmount !== null && (
         <p className="text-center font-semibold text-good">
-          ✓ {t.play.sent}: {sentAmount.toLocaleString('fi-FI')}
+          {t.play.sent}: {sentAmount.toLocaleString('fi-FI')}
         </p>
       )}
       {ctx.error && <p className="text-center font-semibold text-bad">{ctx.error}</p>}
@@ -410,7 +409,6 @@ function CellarInput({ ctx }: { ctx: Ctx }) {
   return (
     <div className="flex flex-1 flex-col gap-4">
       <div className="text-center">
-        <div className="text-3xl">🕯️</div>
         <h2 className="text-2xl font-black text-accent2">{t.play.inCellar}</h2>
         <div className="text-xl font-bold">{ch.name}</div>
         <p className="text-white/70">{ch.rule}</p>
@@ -423,10 +421,9 @@ function CellarInput({ ctx }: { ctx: Ctx }) {
               type="button"
               disabled={!ctx.canAnswer}
               onClick={() => ctx.send(d)}
-              className={`flex aspect-[2/3] flex-col items-center justify-center rounded-t-full border-4 text-xl font-black ${ctx.sent === d ? 'border-accent bg-accent/30' : 'border-white/30 bg-ink2'}`}
+              className={`flex aspect-[2/3] flex-col items-center justify-end rounded-t-[3rem] border-2 pb-4 ${ctx.sent === d ? 'border-accent bg-accent/20' : 'border-paper/30 bg-ink2'}`}
             >
-              🚪
-              <span>{d + 1}</span>
+              <span className="tabular-nums text-3xl">{d + 1}</span>
             </button>
           ))}
         </div>
@@ -470,7 +467,7 @@ function CellarInput({ ctx }: { ctx: Ctx }) {
                 onClick={() => ctx.send(u)}
                 className={`flex min-h-14 items-center gap-3 rounded-xl px-4 text-lg font-bold ${ctx.sent === u ? 'bg-bad' : 'bg-white/10'}`}
               >
-                <Avatar id={ctx.players[u]?.avatar ?? ''} size="sm" /> {ctx.players[u]?.name}
+                <Avatar id={ctx.players[u]?.avatar ?? ''} name={ctx.players[u]?.name} size="sm" /> {ctx.players[u]?.name}
               </button>
             ))}
         </div>
@@ -487,7 +484,7 @@ function Outcome({ ok, title, delta, sub }: { ok: boolean | null; title: string;
   return (
     <Big>
       <Pop>
-        <div className={`text-6xl ${ok === null ? '' : ''}`}>{ok === true ? '🎉' : ok === false ? '😬' : '⏳'}</div>
+        <div className={`h-1.5 w-16 rounded-full ${ok === true ? 'bg-good' : ok === false ? 'bg-bad' : 'bg-paper/30'}`} />
       </Pop>
       <div className={`text-4xl font-black ${ok === true ? 'text-good' : ok === false ? 'text-bad' : ''}`}>{title}</div>
       {delta !== undefined && <Delta n={delta} className="text-3xl" />}
@@ -510,7 +507,7 @@ function ResultView({ ctx }: { ctx: Ctx }) {
           ok={r.correct}
           title={r.choice === null ? t.play.noAnswer : r.correct ? t.play.correct : t.play.wrong}
           delta={r.points}
-          sub={toCellar ? `🕯️ ${t.stage.toCellar}!` : revived ? t.stage.revived : r.streak > 1 ? `🔥 ${r.streak}` : undefined}
+          sub={toCellar ? `${t.stage.toCellar}!` : revived ? t.stage.revived : r.streak > 1 ? `Putki ×${r.streak}` : undefined}
         />
       );
     }
@@ -536,7 +533,7 @@ function ResultView({ ctx }: { ctx: Ctx }) {
     case 'cellar-verdict': {
       const v = view.verdict;
       if (!v) return <Big>{t.play.lookUp}</Big>;
-      if (v.dead.includes(uid)) return <Outcome ok={false} title={t.stage.died} sub="👻" />;
+      if (v.dead.includes(uid)) return <Outcome ok={false} title={t.stage.died} />;
       if (v.survivors.includes(uid)) return <Outcome ok title={t.stage.survived} />;
       return <Big>{t.play.lookUp}</Big>;
     }
@@ -575,7 +572,7 @@ function ResultView({ ctx }: { ctx: Ctx }) {
       const row = (view.ranking as { uid: string; rank: number; delta: number }[]).find((r) => r.uid === uid);
       return (
         <Big>
-          {view.kind === 'podium' && <div className="text-6xl">{row && row.rank <= 3 ? ['🥇', '🥈', '🥉'][row.rank - 1] : '🎈'}</div>}
+          {view.kind === 'podium' && row && <div className={`font-display text-7xl font-black ${row.rank <= 3 ? 'text-accent' : 'text-paper/50'}`}>{row.rank}.</div>}
           <div className="text-3xl font-black">{row ? t.play.yourRank(row.rank) : ''}</div>
           {view.kind === 'scoreboard' && row && <Delta n={row.delta} className="text-2xl" />}
           <div className="text-5xl font-black tabular-nums">{ctx.me.score.toLocaleString('fi-FI')}</div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { t } from '../i18n/fi.ts';
 import { isMuted, setMuted } from '../lib/sound.ts';
 import { Button } from '../components/ui.tsx';
+import { Icon } from '../components/icons.tsx';
 import type { HostLike as HostController } from './controller.ts';
 
 export function Controls({ ctrl, navClass = 'fixed inset-x-0 bottom-0' }: { ctrl: HostController; navClass?: string }) {
@@ -44,30 +45,30 @@ export function Controls({ ctrl, navClass = 'fixed inset-x-0 bottom-0' }: { ctrl
           </ul>
         </aside>
       )}
-      <nav className={`${navClass} z-20 flex items-center gap-2 bg-ink/90 px-4 py-3 backdrop-blur`}>
+      <nav className={`${navClass} z-20 flex items-center gap-2 border-t border-line bg-ink/95 px-4 py-3 backdrop-blur`}>
         {!podium && s && (
           <>
             {s.paused ? (
-              <Button onClick={() => void ctrl.resume()}>▶ {t.host.continue}</Button>
+              <Button onClick={() => void ctrl.resume()}><Icon.play /> {t.host.continue}</Button>
             ) : (
               <Button variant="ghost" onClick={() => void ctrl.pause()}>
-                ⏸ {t.host.pause}
+                <Icon.pause /> {t.host.pause}
               </Button>
             )}
             <Button variant="ghost" onClick={() => void ctrl.next()} disabled={s.paused}>
-              ⏭ {t.host.skip}
+              <Icon.skip /> {t.host.skip}
             </Button>
           </>
         )}
         {isBluff && (
           <Button variant={flagged ? 'danger' : 'ghost'} onClick={() => setModOpen((o) => !o)}>
-            🛡 {t.host.moderation}
-            {flagged > 0 && ` (${flagged} ⚠️)`}
+            <Icon.shield /> {t.host.moderation}
+            {flagged > 0 && ` (${flagged})`}
           </Button>
         )}
         {podium && (
           <Button onClick={() => void ctrl.rematch()} className="text-xl">
-            🔁 {t.host.rematch}
+            <Icon.repeat /> {t.host.rematch}
           </Button>
         )}
         <div className="ml-auto flex gap-2">
@@ -79,7 +80,7 @@ export function Controls({ ctrl, navClass = 'fixed inset-x-0 bottom-0' }: { ctrl
             }}
             aria-label={muted ? t.host.unmute : t.host.mute}
           >
-            {muted ? '🔇' : '🔊'}
+            {muted ? <Icon.mute /> : <Icon.sound />}
           </Button>
           <Button
             variant={confirmEnd ? 'danger' : 'ghost'}

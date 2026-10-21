@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import QRCode from 'qrcode';
 import { DEFAULT_COUNTS, isSuspicious, MODES, PLAN_TEMPLATES, type ModeId, type PlanItem, type QuestionPack } from '@halina/engine';
@@ -6,7 +6,8 @@ import { BUILTIN_PACKS, parsePack } from '@halina/content';
 import { LAN_ORIGIN } from '../lib/firebase.ts';
 import { t } from '../i18n/fi.ts';
 import { Avatar, Button } from '../components/ui.tsx';
-import type { HostController } from './controller.ts';
+import { Icon } from '../components/icons.tsx';
+import type { HostLike } from './controller.ts';
 
 const MIN_TO_START = 2;
 const MODE_IDS = Object.keys(MODES) as ModeId[];
@@ -15,7 +16,18 @@ export function joinUrl(code: string) {
   return `${LAN_ORIGIN || location.origin}/play?code=${code}`;
 }
 
-export function Lobby({ ctrl }: { ctrl: HostController }) {
+export function Lobby({
+  ctrl,
+  joinPanel,
+  extraSettings,
+  showSpeed = import.meta.env.DEV,
+}: {
+  ctrl: HostLike;
+  /** korvaa QR-koodin ja osoitteen (esim. selaindemossa) */
+  joinPanel?: ReactNode;
+  extraSettings?: ReactNode;
+  showSpeed?: boolean;
+}) {
   const [plan, setPlan] = useState<PlanItem[]>(PLAN_TEMPLATES[0].plan);
   const [templateId, setTemplateId] = useState<string>(PLAN_TEMPLATES[0].id);
   const [packs, setPacks] = useState<QuestionPack[]>(BUILTIN_PACKS);
@@ -28,8 +40,9 @@ export function Lobby({ ctrl }: { ctrl: HostController }) {
   const n = players.length;
 
   useEffect(() => {
+    if (joinPanel) return;
     void QRCode.toString(url, { type: 'svg', margin: 1, color: { dark: '#1b1033', light: '#ffffff' } }).then(setQr);
-  }, [url]);
+  }, [url, joinPanel]);
 
   const pickTemplate = (id: string) => {
     setTemplateId(id);
@@ -59,7 +72,8 @@ export function Lobby({ ctrl }: { ctrl: HostController }) {
   return (
     <div className="grid min-h-full gap-6 p-6 lg:grid-cols-[1.2fr_1fr] lg:p-10">
       <section className="flex flex-col gap-6">
-        <div className="flex flex-wrap items-center gap-8 rounded-3xl bg-white/5 p-6">
+        {joinPanel ?? (
+        <div className="flex flex-wrap items-center gap-8 rounded-xl border border-line bg-ink2/60 p-6">
           <div className="w-52 shrink-0 overflow-hidden rounded-2xl bg-white p-2" dangerouslySetInnerHTML={{ __html: qr }} aria-label={url} />
           <div className="min-w-0">
             <div className="text-xl text-white/70">
@@ -70,8 +84,9 @@ export function Lobby({ ctrl }: { ctrl: HostController }) {
             </div>
           </div>
         </div>
+        )}
 
-        <div className="flex-1 rounded-3xl bg-white/5 p-6">
+        <div className="flex-1 rounded-xl border border-line bg-ink2/60 p-6">
           <h2 className="mb-4 text-2xl font-black">{t.host.players(n)}</h2>
           {n === 0 && <p className="text-xl text-white/60">{t.host.noPlayers}</p>}
           <div className="flex flex-wrap gap-3">
@@ -85,16 +100,16 @@ export function Lobby({ ctrl }: { ctrl: HostController }) {
                   exit={{ scale: 0, opacity: 0 }}
                   className={`group flex items-center gap-2 rounded-2xl bg-white/10 py-2 pr-2 pl-3 ${p.connected === false ? 'opacity-40' : ''}`}
                 >
-                  <Avatar id={p.avatar} />
+                  <Avatar id={p.avatar} name={p.name} />
                   <span className="text-xl font-bold">{p.name}</span>
-                  {isSuspicious(p.name) && <span title={t.host.flaggedName}>⚠️</span>}
+                  {isSuspicious(p.name) && <span title={t.host.flaggedName} className="text-accent2"><Icon.warn /></span>}
                   <button
                     type="button"
                     onClick={() => void ctrl.kick(uid)}
                     className="ml-1 rounded-lg px-2 py-1 text-sm text-white/50 hover:bg-bad hover:text-white"
                     aria-label={`${t.host.kick} ${p.name}`}
                   >
-                    ✕
+                    <Icon.close />
                   </button>
                 </motion.div>
               ))}
@@ -103,7 +118,7 @@ export function Lobby({ ctrl }: { ctrl: HostController }) {
         </div>
       </section>
 
-      <section className="flex flex-col gap-5 rounded-3xl bg-white/5 p-6">
+      <section className="flex flex-col gap-5 rounded-xl border border-line bg-ink2/60 p-6">
         <h2 className="text-2xl font-black">{t.host.plan}</h2>
         <div className="flex flex-wrap gap-2">
           {PLAN_TEMPLATES.map((tpl) => (
@@ -185,7 +200,7 @@ export function Lobby({ ctrl }: { ctrl: HostController }) {
                   className="ml-auto rounded-lg px-2 py-1 text-white/50 hover:bg-bad hover:text-white"
                   aria-label={t.host.remove}
                 >
-                  ✕
+                  <Icon.close />
                 </button>
               </li>
             );
@@ -225,7 +240,8 @@ export function Lobby({ ctrl }: { ctrl: HostController }) {
         </div>
         {importMsg && <p className={`text-sm ${importMsg.ok ? 'text-good' : 'text-bad'}`}>{importMsg.text}</p>}
 
-        {import.meta.env.DEV && (
+        {extraSettings}
+        {showSpeed && (
           <label className="flex items-center gap-2 text-sm text-white/60">
             {t.host.speed}
             <select value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="rounded bg-ink2 px-2 py-1" data-testid="speed">

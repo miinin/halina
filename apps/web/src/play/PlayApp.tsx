@@ -137,9 +137,9 @@ function JoinForm({
                 aria-label={id}
                 aria-pressed={avatar === id}
                 onClick={() => setAvatar(id)}
-                className={`grid aspect-square min-h-11 place-items-center rounded-xl ${avatar === id ? 'bg-accent' : 'bg-white/10'}`}
+                className={`grid aspect-square min-h-11 place-items-center rounded-lg border-2 ${avatar === id ? 'border-accent' : 'border-transparent'}`}
               >
-                <Avatar id={id} size="sm" />
+                <Avatar id={id} name={name} size="sm" />
               </button>
             ))}
           </div>
